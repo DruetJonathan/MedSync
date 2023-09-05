@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public Long register(User user) {
         user.setId(null);
-        if (userRepository.existsByEmail(user.getEmail())){
+        if (!userRepository.existsByEmail(user.getEmail())){
             userRepository.save(user);
         }else{
             throw new AlreadyExistException("Already exist");

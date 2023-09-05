@@ -27,6 +27,7 @@ public class User implements UserDetails {
     private Date birthdate;
     private String numeroTelephone;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Override
