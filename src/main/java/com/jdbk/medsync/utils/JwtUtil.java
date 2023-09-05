@@ -2,7 +2,7 @@ package com.jdbk.medsync.utils;
 
 
 import com.jdbk.medsync.config.JwtConfig;
-import com.jdbk.medsync.model.User;
+import com.jdbk.medsync.model.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtParser;

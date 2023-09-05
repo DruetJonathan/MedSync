@@ -1,4 +1,4 @@
-package com.jdbk.medsync.model;
+package com.jdbk.medsync.model.entity;
 
 import com.jdbk.medsync.model.Enum.Role;
 import jakarta.persistence.Entity;

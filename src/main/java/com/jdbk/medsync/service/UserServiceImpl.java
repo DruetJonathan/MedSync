@@ -1,6 +1,6 @@
 package com.jdbk.medsync.service;
 
-import com.jdbk.medsync.model.User;
+import com.jdbk.medsync.model.entity.User;
 import com.jdbk.medsync.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

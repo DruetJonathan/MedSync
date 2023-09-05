@@ -1,7 +1,7 @@
 package com.jdbk.medsync.model.DTO;
 
 import com.jdbk.medsync.model.Enum.Role;
-import com.jdbk.medsync.model.User;
+import com.jdbk.medsync.model.entity.User;
 import lombok.Data;
 
 @Data

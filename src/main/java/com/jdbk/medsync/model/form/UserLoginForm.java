@@ -1,6 +1,6 @@
 package com.jdbk.medsync.model.form;
 
-import com.jdbk.medsync.model.User;
+import com.jdbk.medsync.model.entity.User;
 import lombok.Data;
 
 @Data

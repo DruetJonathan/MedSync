@@ -1,7 +1,7 @@
 package com.jdbk.medsync.controller;
 
 import com.jdbk.medsync.model.DTO.UserTokenDTO;
-import com.jdbk.medsync.model.User;
+import com.jdbk.medsync.model.entity.User;
 import com.jdbk.medsync.model.form.UserLoginForm;
 import com.jdbk.medsync.service.UserService;
 import com.jdbk.medsync.utils.JwtUtil;
