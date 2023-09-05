@@ -15,7 +15,6 @@ import java.util.Date;
 public class UserRegisterForm {
     @NotNull
     @Email
-    @Pattern(regexp = "/^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$/")
     private String email;
     @NotNull
     private String firstname;
