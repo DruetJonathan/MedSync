@@ -38,6 +38,7 @@ public class JwtFilter extends OncePerRequestFilter {
             String token = authorizations[1];
 
             if (type.equals("Bearer") && !token.equals("")) {
+
                 String username = this.util.getUsername(token);
                 UserDetails user = this.userDetailsService.loadUserByUsername(username);
 

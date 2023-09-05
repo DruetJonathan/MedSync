@@ -1,0 +1,34 @@
+package com.jdbk.medsync.controller;
+
+import com.jdbk.medsync.model.DTO.UserTokenDTO;
+import com.jdbk.medsync.model.User;
+import com.jdbk.medsync.model.form.UserLoginForm;
+import com.jdbk.medsync.service.UserService;
+import com.jdbk.medsync.utils.JwtUtil;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@CrossOrigin("*")
+@RestController
+public class UserController {
+    private UserService userService;
+    private JwtUtil jwtUtil;
+
+    public UserController(UserService userService, JwtUtil jwtUtil) {
+        this.userService = userService;
+        this.jwtUtil = jwtUtil;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserTokenDTO> login(
+            @RequestBody UserLoginForm userLoginForm
+    ){
+        User user = userService.login(userLoginForm.toEntity());
+        UserTokenDTO dto = UserTokenDTO.fromEntity(user);
+        dto.setToken(jwtUtil.generateToken(user));
+        return ResponseEntity.ok(dto);
+    }
+}
