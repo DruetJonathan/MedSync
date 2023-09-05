@@ -1,5 +1,6 @@
 package com.jdbk.medsync.model.entity;
 
+import com.jdbk.medsync.model.Enum.Machine;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -17,4 +18,6 @@ public class Demande {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    public Machine machine;
 }
