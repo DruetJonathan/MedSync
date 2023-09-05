@@ -12,7 +12,7 @@ public class Demande {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToMany(mappedBy = "demandes")
-    Set<Produit> produits = new HashSet<>();
+    Set<Produit> produits;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id")

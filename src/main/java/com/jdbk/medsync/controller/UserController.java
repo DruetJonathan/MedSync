@@ -7,6 +7,7 @@ import com.jdbk.medsync.model.form.UserRegisterForm;
 import com.jdbk.medsync.service.UserService;
 import com.jdbk.medsync.utils.JwtUtil;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,10 +33,13 @@ public class UserController {
         return ResponseEntity.ok(dto);
     }
     @PostMapping("/register")
-    public ResponseEntity<Long> register(@RequestBody @Valid UserRegisterForm userRegisterForm){
+    public ResponseEntity<?> register(@RequestBody @Valid UserRegisterForm userRegisterForm){
         User user = userRegisterForm.toEntity();
-        userService.register(user);
-        return ResponseEntity.ok(user.getId());
+        Long register = userService.register(user);
+        if (register != null)
+            return ResponseEntity.ok(user.getId());
+        else
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Already exist by email: "+user.getEmail());
     }
 
 
