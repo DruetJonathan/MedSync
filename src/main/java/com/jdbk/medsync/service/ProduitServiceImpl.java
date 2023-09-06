@@ -45,7 +45,7 @@ public class ProduitServiceImpl implements ProduitService {
 //        if (produitId == null){
 //            throw new NotFoundException("Product not found");
 //        }
-        Produit produit = produitRepository.findById(produitId).orElseThrow(() -> new NotFoundException("Product not found"));
+        Produit produit = getProduitById(produitId);
         produitRepository.delete(produit);
         return produit;
     }

@@ -2,11 +2,13 @@ package com.jdbk.medsync.model.entity;
 
 import com.jdbk.medsync.model.Enum.Machine;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+@Entity @Getter @Setter
 public class Demande {
 
     @Id
