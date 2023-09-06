@@ -14,8 +14,8 @@ public class RendezVous {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    Date dateDebut;
-    Date dateFin;
+    private Date dateDebut;
+    private Date dateFin;
 
     @OneToOne(mappedBy = "rendezVous")
     private Demande demande;
