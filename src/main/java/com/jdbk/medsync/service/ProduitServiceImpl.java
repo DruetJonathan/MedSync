@@ -37,7 +37,7 @@ public class ProduitServiceImpl implements ProduitService {
 
     @Override
     public Produit getProduitById(Long produitId) {
-        return produitRepository.findById(produitId).orElseThrow(() -> new NotFoundException("Produit non trouvé"));
+        return produitRepository.findById(produitId).orElseThrow(() -> new NotFoundException("Product not found"));
     }
 
     @Override
