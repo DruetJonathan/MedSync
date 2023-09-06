@@ -34,7 +34,7 @@ public class UserController {
             User user = userService.login(userLoginForm.toEntity());
             UserTokenDTO dto = UserTokenDTO.fromEntity(user);
             dto.setToken(jwtUtil.generateToken(user));
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(dto);
+            return ResponseEntity.status(HttpStatus.OK).body(dto);
         }catch (NotTheGoodPasswordException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Not the good password");
         }catch (NotFoundException e){

@@ -4,10 +4,7 @@ import com.jdbk.medsync.model.DTO.ProduitDTO;
 import com.jdbk.medsync.model.entity.Produit;
 import com.jdbk.medsync.service.ProduitService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
@@ -20,9 +17,10 @@ public class ProduitController {
         this.produitService = produitService;
     }
 
-public ResponseEntity<ProduitDTO> getProduitById(@PathVariable Long id) {
+public ResponseEntity<ProduitDTO> getProduitById(@PathVariable @RequestBody Long id) {
     Produit produit = produitService.getProduitById(id);
-   // ProduitDTO body = ProduitDTO.toDTO(produit);
+    ProduitDTO body = new ProduitDTO();
+    body.toDTO(produit);
     return null;
     }
 }
