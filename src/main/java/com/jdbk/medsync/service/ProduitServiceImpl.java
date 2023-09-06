@@ -1,6 +1,7 @@
 package com.jdbk.medsync.service;
 
 import com.jdbk.medsync.exception.AlreadyExistException;
+import com.jdbk.medsync.exception.InvalidQuantityException;
 import com.jdbk.medsync.exception.NotFoundException;
 import com.jdbk.medsync.model.entity.Produit;
 import com.jdbk.medsync.repository.ProduitRepository;
@@ -29,13 +30,22 @@ public class ProduitServiceImpl implements ProduitService {
 
     @Override
     public Produit updateProduit(long id, Produit produit) {
+        if (produit.getQuantite() < 0) {
+            throw new InvalidQuantityException("nouvelleQuantite should be positive or 0");
+        }
+        if (produit == null && !produitRepository.existsById(id)){
+            throw new NotFoundException("Product not found");
+        }
         produit.setId(id);
         return produitRepository.save(produit);
     }
 
     @Override
     public Produit removeProduit(Long produitId) {
-        Produit produit = getProduitById(produitId);
+//        if (produitId == null){
+//            throw new NotFoundException("Product not found");
+//        }
+        Produit produit = produitRepository.findById(produitId).orElseThrow(() -> new NotFoundException("Product not found"));
         produitRepository.delete(produit);
         return produit;
     }
@@ -54,9 +64,8 @@ public class ProduitServiceImpl implements ProduitService {
     @Override
     public Produit updateStockProduit(Long produitId, Long nouvelleQuantite) {
         if (nouvelleQuantite < 0) {
-            throw new IllegalArgumentException("nouvelleQuantite should be positive or 0");
+            throw new InvalidQuantityException("nouvelleQuantite should be positive or 0");
         }
-
         Produit produit = getProduitById(produitId);
         produit.setQuantite( nouvelleQuantite );
         return produitRepository.save(produit);

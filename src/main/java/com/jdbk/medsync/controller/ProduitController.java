@@ -1,6 +1,7 @@
 package com.jdbk.medsync.controller;
 
 import com.jdbk.medsync.exception.AlreadyExistException;
+import com.jdbk.medsync.exception.InvalidQuantityException;
 import com.jdbk.medsync.exception.NotFoundException;
 import com.jdbk.medsync.model.DTO.ProduitDTO;
 import com.jdbk.medsync.model.entity.Produit;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/produit")
+@RequestMapping("/produits")
 public class ProduitController {
 
     private final ProduitService produitService;
@@ -33,6 +34,30 @@ public class ProduitController {
         }
     }
 
+    @PutMapping("/{id:[0-9]+}")
+    public ResponseEntity<?> updateProduit(@PathVariable Long id, @RequestBody @Valid ProduitForm form) {
+        Produit entity = form.toEntity();
+        try {
+            Produit produit = produitService.updateProduit(id, entity);
+            return ResponseEntity.status(HttpStatus.OK).body(produit);
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        }catch (InvalidQuantityException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid quantity");
+        }
+    }
+
+    @DeleteMapping("/{id:[0-9]+}")
+    public ResponseEntity<?> removeProduit(@PathVariable Long id) {
+        try {
+            Produit produit = produitService.removeProduit(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Product deleted");
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        }
+    }
+
+
 
     @GetMapping("/{id:[0-9]+}")
     public ResponseEntity<?> getProduitById(@PathVariable Long id) {
@@ -45,7 +70,26 @@ public class ProduitController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<?> getAll() {
+        return ResponseEntity.ok(
+                produitService.getAll().stream()
+                        .map(ProduitDTO::toDTO)
+                        .toList()
+        );
+    }
 
+    @PutMapping("/{id:[0-9]+}/updateStock")
+    public ResponseEntity<?> updateStockProduit(@PathVariable Long id, @RequestParam Long nouvelleQuantite) {
+        try {
+            Produit produit = produitService.updateStockProduit(id, nouvelleQuantite);
+            return ResponseEntity.status(HttpStatus.OK).body(produit);
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        } catch (InvalidQuantityException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid quantity");
+        }
+    }
 
 
 }
