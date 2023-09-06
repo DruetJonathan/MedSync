@@ -15,6 +15,8 @@ public class Demande {
     @ManyToMany(mappedBy = "demandes")
     Set<Produit> produits;
 
+    private Long duree;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;

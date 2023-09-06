@@ -1,10 +1,15 @@
 package com.jdbk.medsync.controller;
 
+import com.jdbk.medsync.exception.NotFoundException;
 import com.jdbk.medsync.model.DTO.ProduitDTO;
 import com.jdbk.medsync.model.entity.Produit;
 import com.jdbk.medsync.service.ProduitService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
@@ -17,10 +22,13 @@ public class ProduitController {
         this.produitService = produitService;
     }
 
-public ResponseEntity<ProduitDTO> getProduitById(@PathVariable @RequestBody Long id) {
-    Produit produit = produitService.getProduitById(id);
-    ProduitDTO body = new ProduitDTO();
-    body.toDTO(produit);
-    return null;
+    public ResponseEntity<?> getProduitById(@PathVariable Long id) {
+        try {
+            Produit produit = produitService.getProduitById(id);
+             ProduitDTO body = ProduitDTO.toDTO(produit);
+            return null;
+        }catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        }
     }
 }
