@@ -34,17 +34,17 @@ public class ProduitController {
     }
 
 
-        @GetMapping("/{id:[0-9]+}")
-        public ResponseEntity<?> getProduitById (@PathVariable Long id){
-            try {
-                Produit produit = produitService.getProduitById(id);
-                ProduitDTO body = ProduitDTO.toDTO(produit);
-                return null;
-            } catch (NotFoundException e) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
-            }
+    @GetMapping("/{id:[0-9]+}")
+    public ResponseEntity<?> getProduitById(@PathVariable Long id) {
+        try {
+            Produit produit = produitService.getProduitById(id);
+            ProduitDTO body = ProduitDTO.toDTO(produit);
+            return null;
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
         }
-
-
     }
+
+
+}
 

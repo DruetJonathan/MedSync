@@ -3,9 +3,13 @@ package com.jdbk.medsync.model.form;
 import com.jdbk.medsync.model.entity.Produit;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
+import lombok.Data;
 
 import java.util.Date;
 
+@Data
+@Builder
 public class ProduitForm {
 
         @NotBlank
