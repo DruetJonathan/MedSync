@@ -7,7 +7,7 @@ import java.util.List;
 public interface ProduitService {
 
     // Ajouter un nouveau produit
-    public long addProduit(Produit produit);
+    public Long addProduit(Produit produit);
 
     // Mettre à jour les informations d'un produit existant
     public Produit updateProduit(long id, Produit produit);

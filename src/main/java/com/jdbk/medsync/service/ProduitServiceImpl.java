@@ -1,5 +1,6 @@
 package com.jdbk.medsync.service;
 
+import com.jdbk.medsync.exception.AlreadyExistException;
 import com.jdbk.medsync.exception.NotFoundException;
 import com.jdbk.medsync.model.entity.Produit;
 import com.jdbk.medsync.repository.ProduitRepository;
@@ -17,7 +18,11 @@ public class ProduitServiceImpl implements ProduitService {
     }
 
     @Override
-    public long addProduit(Produit produit) {
+    public Long addProduit(Produit produit) {
+        produit.setId(null);
+        if (produitRepository.existsByLibele(produit.getLibele())) {
+            throw new AlreadyExistException("Product with libele already exist");
+        }
         produit = produitRepository.save(produit);
         return produit.getId();
     }
