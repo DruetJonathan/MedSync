@@ -44,7 +44,7 @@ public class RendezVousController {
     }
 
     @PutMapping("/{id:[0-9]+}")
-    public ResponseEntity<?> updateProduit(@PathVariable Long id, @RequestBody @Valid RendezVousForm form) {
+    public ResponseEntity<?> updateRendezVous(@PathVariable Long id, @RequestBody @Valid RendezVousForm form) {
         RendezVous entity = form.toEntity();
         try {
             RendezVous rendezVous = rendezVousService.updateRendezVous(id, entity);
@@ -57,7 +57,7 @@ public class RendezVousController {
     }
 
     @DeleteMapping("/{id:[0-9]+}")
-    public ResponseEntity<?> removeProduit(@PathVariable Long id) {
+    public ResponseEntity<?> removeRendezVous(@PathVariable Long id) {
         try {
             RendezVous rendezVous = rendezVousService.removeRendezVous(id);
             return ResponseEntity.status(HttpStatus.OK).body("Rendez-vous deleted");
@@ -67,7 +67,7 @@ public class RendezVousController {
     }
 
     @GetMapping("/{id:[0-9]+}")
-    public ResponseEntity<?> getProduitById(@PathVariable Long id) {
+    public ResponseEntity<?> getRendezVousById(@PathVariable Long id) {
         try {
             RendezVous rendezVous = rendezVousService.getRendezVousById(id);
             RendezVousDTO rendezVousDTO = RendezVousDTO.toDTO(rendezVous);

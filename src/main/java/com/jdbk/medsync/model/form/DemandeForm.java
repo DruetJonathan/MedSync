@@ -19,19 +19,20 @@ public class DemandeForm {
     @NotNull
     private Long duree;
     @NotNull
-    private User user;
+    private Long idUser;
 
     private Machine machine;
     @NotNull
-    private RendezVous rendezVous;
+    private Long idRendezVous;
 
     public Demande toEntity() {
         Demande demande = new Demande();
         demande.setProduits(this.produits);
         demande.setDuree(this.duree);
-        demande.setUser(this.user);
+        demande.setRendezVous(null);
+        // TODO verifier le nulml du rendez vous
         demande.setMachine(this.machine);
-        demande.setRendezVous(this.rendezVous);
+
         return demande;
     }
 }
