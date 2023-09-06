@@ -22,4 +22,8 @@ public class Demande {
     private User user;
 
     public Machine machine;
+
+    @OneToOne
+    @JoinColumn(name = "rendezvous_id", referencedColumnName = "id")
+    private RendezVous rendezVous;
 }
