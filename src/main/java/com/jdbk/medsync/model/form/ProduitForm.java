@@ -3,6 +3,7 @@ package com.jdbk.medsync.model.form;
 import com.jdbk.medsync.model.entity.Produit;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,10 +16,11 @@ public class ProduitForm {
         @NotBlank
         private String libele;
 
-        @NotBlank
+        @NotNull
         private Long quantite;
 
-        @NotBlank @Future
+        @NotNull
+        @Future
         private Date dateExpiration;
 
         public Produit toEntity() {

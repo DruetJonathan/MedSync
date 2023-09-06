@@ -52,13 +52,13 @@ public class ProduitServiceImpl implements ProduitService {
     }
 
     @Override
-    public Produit updateStockProduit(Long produitId, Long quantiteReduite) {
-        if (quantiteReduite < 0) {
-            throw new IllegalArgumentException("quantiteReduite should be positive or 0");
+    public Produit updateStockProduit(Long produitId, Long nouvelleQuantite) {
+        if (nouvelleQuantite < 0) {
+            throw new IllegalArgumentException("nouvelleQuantite should be positive or 0");
         }
 
         Produit produit = getProduitById(produitId);
-        produit.setQuantite( quantiteReduite );
+        produit.setQuantite( nouvelleQuantite );
         return produitRepository.save(produit);
     }
 

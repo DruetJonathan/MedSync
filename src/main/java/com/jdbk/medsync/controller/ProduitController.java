@@ -38,12 +38,14 @@ public class ProduitController {
     public ResponseEntity<?> getProduitById(@PathVariable Long id) {
         try {
             Produit produit = produitService.getProduitById(id);
-            ProduitDTO body = ProduitDTO.toDTO(produit);
-            return null;
+            ProduitDTO produitDTO = ProduitDTO.toDTO(produit);
+            return ResponseEntity.status(HttpStatus.OK).body(produitDTO);
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
         }
     }
+
+
 
 
 }
