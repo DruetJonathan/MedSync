@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,7 +24,7 @@ public class Produit {
     private Long quantite;
 
     @Column(name = "produit_date_expiration", nullable = false)
-    private Date dateExpiration;
+    private LocalDateTime dateExpiration;
 
     @ManyToMany
     @JoinTable(

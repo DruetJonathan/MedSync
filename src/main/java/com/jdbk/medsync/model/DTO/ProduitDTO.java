@@ -5,6 +5,7 @@ import com.jdbk.medsync.model.entity.Produit;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public class ProduitDTO {
     private Long id;
     private String libele;
     private Long quantite;
-    private Date dateExpiration;
+    private LocalDateTime dateExpiration;
     private Set<Demande> demandes;
 
     public static ProduitDTO toDTO(Produit produit){

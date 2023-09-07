@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.aspectj.lang.annotation.Before;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -24,7 +25,7 @@ public class UserRegisterForm {
     private String password;
     @NotNull
     @Past
-    private Date birthdate;
+    private LocalDateTime birthdate;
     @NotNull
     private Role role;
     @NotNull

@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -21,7 +22,7 @@ public class ProduitForm {
 
         @NotNull
         @Future
-        private Date dateExpiration;
+        private LocalDateTime dateExpiration;
 
         public Produit toEntity() {
             Produit produit = new Produit();
