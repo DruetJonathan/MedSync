@@ -1,10 +1,11 @@
-package com.jdbk.medsync.service;
+package com.jdbk.medsync.service.impl;
 
 import com.jdbk.medsync.exception.AlreadyExistException;
 import com.jdbk.medsync.exception.InvalidQuantityException;
 import com.jdbk.medsync.exception.NotFoundException;
 import com.jdbk.medsync.model.entity.Produit;
 import com.jdbk.medsync.repository.ProduitRepository;
+import com.jdbk.medsync.service.notImpl.ProduitService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -23,7 +24,7 @@ public class ProduitServiceImpl implements ProduitService {
     public Long addProduit(Produit produit) {
         produit.setId(null);
         if (produitRepository.existsByLibele(produit.getLibele())) {
-            throw new AlreadyExistException("Product with libele already exist");
+            throw new AlreadyExistException(produit.getId(),ProduitServiceImpl.class.toString());
         }
         produit = produitRepository.save(produit);
         return produit.getId();
@@ -32,10 +33,10 @@ public class ProduitServiceImpl implements ProduitService {
     @Override
     public Produit updateProduit(long id, Produit produit) {
         if (produit.getQuantite() < 0) {
-            throw new InvalidQuantityException("nouvelleQuantite should be positive or 0");
+            throw new InvalidQuantityException(id);
         }
         if (produit == null && !produitRepository.existsById(id)){
-            throw new NotFoundException("Product not found");
+            throw new NotFoundException(id,ProduitServiceImpl.class.toString());
         }
         produit.setId(id);
         return produitRepository.save(produit);
@@ -53,7 +54,7 @@ public class ProduitServiceImpl implements ProduitService {
 
     @Override
     public Produit getProduitById(Long produitId) {
-        return produitRepository.findById(produitId).orElseThrow(() -> new NotFoundException("Product not found"));
+        return produitRepository.findById(produitId).orElseThrow(() -> new NotFoundException(produitId,ProduitServiceImpl.class.toString()));
     }
 
     @Override
@@ -65,7 +66,7 @@ public class ProduitServiceImpl implements ProduitService {
     @Override
     public Produit updateStockProduit(Long produitId, Long nouvelleQuantite) {
         if (nouvelleQuantite < 0) {
-            throw new InvalidQuantityException("nouvelleQuantite should be positive or 0");
+            throw new InvalidQuantityException(produitId);
         }
         Produit produit = getProduitById(produitId);
         produit.setQuantite( nouvelleQuantite );

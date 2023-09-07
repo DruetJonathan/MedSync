@@ -2,10 +2,10 @@ package com.jdbk.medsync.exception;
 
 public class InvalidQuantityException extends RuntimeException{
 
-    public InvalidQuantityException() {
+    private final Long id;
+    public InvalidQuantityException(Long id) {
+        super("Invalid quantity for product at id ->{"+id+"}");
+        this.id = id;
     }
 
-    public InvalidQuantityException(String message) {
-        super(message);
-    }
 }

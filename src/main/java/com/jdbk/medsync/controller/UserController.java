@@ -1,13 +1,10 @@
 package com.jdbk.medsync.controller;
 
-import com.jdbk.medsync.exception.AlreadyExistException;
-import com.jdbk.medsync.exception.NotFoundException;
-import com.jdbk.medsync.exception.NotTheGoodPasswordException;
 import com.jdbk.medsync.model.DTO.UserTokenDTO;
 import com.jdbk.medsync.model.entity.User;
 import com.jdbk.medsync.model.form.UserLoginForm;
 import com.jdbk.medsync.model.form.UserRegisterForm;
-import com.jdbk.medsync.service.UserService;
+import com.jdbk.medsync.service.notImpl.UserService;
 import com.jdbk.medsync.utils.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -29,27 +26,20 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid UserLoginForm userLoginForm){
-        try{
-            User user = userService.login(userLoginForm.toEntity());
-            UserTokenDTO dto = UserTokenDTO.fromEntity(user);
-            dto.setToken(jwtUtil.generateToken(user));
-            return ResponseEntity.status(HttpStatus.OK).body(dto);
-        }catch (NotTheGoodPasswordException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Not the good password");
-        }catch (NotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with this email not found");
-        }
+    public ResponseEntity<UserTokenDTO> login(@RequestBody @Valid UserLoginForm userLoginForm) {
+        User user = userService.login(userLoginForm.toEntity());
+        UserTokenDTO dto = UserTokenDTO.fromEntity(user);
+        dto.setToken(jwtUtil.generateToken(user));
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
+
     }
+
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid UserRegisterForm userRegisterForm) {
+    public ResponseEntity<Long> register(@RequestBody @Valid UserRegisterForm userRegisterForm) {
         User user = userRegisterForm.toEntity();
-        try {
-            Long register = userService.register(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(user.getId());
-        } catch (AlreadyExistException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Already exist by email: " + user.getEmail());
-        }
+        Long register = userService.register(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user.getId());
+
     }
 
 

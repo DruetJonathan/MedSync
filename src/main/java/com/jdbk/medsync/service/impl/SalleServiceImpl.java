@@ -1,10 +1,10 @@
-package com.jdbk.medsync.service;
+package com.jdbk.medsync.service.impl;
 
 import com.jdbk.medsync.exception.AlreadyExistException;
 import com.jdbk.medsync.exception.NotFoundException;
-import com.jdbk.medsync.model.entity.Produit;
 import com.jdbk.medsync.model.entity.Salle;
 import com.jdbk.medsync.repository.SalleRepository;
+import com.jdbk.medsync.service.notImpl.SalleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class SalleServiceImpl implements SalleService {
     public Long addSalle(Salle salle) {
         salle.setId(null);
         if (salleRepository.existsByEtageAndNumeroSalle(salle.getEtage(),salle.getNumeroSalle())){
-            throw new AlreadyExistException("Salle with etage and number of salle already exist");
+            throw new AlreadyExistException(salle.getId(),SalleServiceImpl.class.toString());
         }
         salle = salleRepository.save(salle);
         return salle.getId();
@@ -29,13 +29,13 @@ public class SalleServiceImpl implements SalleService {
 
     @Override
     public Salle getOne(Long id) {
-        return salleRepository.findById(id).orElseThrow(() -> new NotFoundException("Salle not found"));
+        return salleRepository.findById(id).orElseThrow(() -> new NotFoundException(id,SalleServiceImpl.class.toString()));
     }
 
     @Override
     public Salle updateSalle(long id, Salle salle) {
         if (salle == null && !salleRepository.existsById(id)){
-            throw new NotFoundException("Salle not found");
+            throw new NotFoundException(id,SalleServiceImpl.class.toString());
         }
         salle.setId(id);
         return salleRepository.save(salle);

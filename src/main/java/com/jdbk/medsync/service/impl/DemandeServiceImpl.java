@@ -1,14 +1,15 @@
-package com.jdbk.medsync.service;
+package com.jdbk.medsync.service.impl;
 
 import com.jdbk.medsync.exception.NotFoundException;
 import com.jdbk.medsync.model.entity.Demande;
 import com.jdbk.medsync.repository.DemandeRepository;
+import com.jdbk.medsync.service.notImpl.DemandeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class DemandeServiceImpl implements DemandeService{
+public class DemandeServiceImpl implements DemandeService {
 
     private final DemandeRepository demandeRepository;
 
@@ -26,13 +27,13 @@ public class DemandeServiceImpl implements DemandeService{
 
     @Override
     public Demande getOne(Long id) {
-        return demandeRepository.findById(id).orElseThrow(()->new NotFoundException("Demande not found"));
+        return demandeRepository.findById(id).orElseThrow(()->new NotFoundException(id,DemandeServiceImpl.class.toString()));
     }
 
     @Override
     public Demande updateDemande(long id, Demande demande) {
         if (demande == null && !demandeRepository.existsById(id)){
-            throw new NotFoundException("Product not found");
+           throw new NotFoundException(id,DemandeServiceImpl.class.toString());
         }
         demande.setId(id);
         return demandeRepository.save(demande);

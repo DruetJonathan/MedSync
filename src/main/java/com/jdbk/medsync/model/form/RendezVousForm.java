@@ -9,8 +9,10 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.cglib.core.Local;
 
 import java.security.PublicKey;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -21,10 +23,10 @@ public class RendezVousForm {
 
     @Future
     @NotNull
-    private Date dateDebut;
+    private LocalDateTime dateDebut;
     @Future
     @NotNull
-    private Date dateFin;
+    private LocalDateTime dateFin;
 
     private Long idUser;
     private Long salle;

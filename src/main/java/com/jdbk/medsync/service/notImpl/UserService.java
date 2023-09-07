@@ -1,4 +1,4 @@
-package com.jdbk.medsync.service;
+package com.jdbk.medsync.service.notImpl;
 
 import com.jdbk.medsync.model.entity.User;
 import org.springframework.security.core.userdetails.UserDetailsService;

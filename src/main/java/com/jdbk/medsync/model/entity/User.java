@@ -32,11 +32,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "demandeur")
     private Set<Demande> demandes;
 
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "creePar", cascade = CascadeType.ALL)
     private Set<RendezVous> rendezVous;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

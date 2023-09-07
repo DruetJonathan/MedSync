@@ -1,15 +1,14 @@
-package com.jdbk.medsync.service;
+package com.jdbk.medsync.service.impl;
 
 import com.jdbk.medsync.exception.AlreadyBusySalleException;
 import com.jdbk.medsync.exception.NotFoundException;
-import com.jdbk.medsync.model.entity.Produit;
 import com.jdbk.medsync.model.entity.RendezVous;
 import com.jdbk.medsync.model.entity.Salle;
 import com.jdbk.medsync.repository.RendezVousRepository;
+import com.jdbk.medsync.service.notImpl.RendezVousService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RendezVousServiceImpl implements RendezVousService {
@@ -22,14 +21,14 @@ public class RendezVousServiceImpl implements RendezVousService {
     @Override
     public Long addRendezVous(RendezVous rendezVous) {
         rendezVous.setId(null);
-        List<RendezVous> rendezVousChevauchants = rendezVousRepository.findByDateDebutBetweenOrDateFinBetween(
-                rendezVous.getDateDebut(), rendezVous.getDateFin(), rendezVous.getDateDebut(), rendezVous.getDateFin()
+        List<RendezVous> rendezVousChevauchants = rendezVousRepository.findInConflit(
+                rendezVous.getDateDebut(), rendezVous.getDateFin()
         );
 
         if (!rendezVousChevauchants.isEmpty()) {
             Salle salle1 = rendezVous.getSalle();
             boolean salleValide = rendezVousChevauchants.stream().anyMatch(salle -> salle.getId().equals(salle1.getId()));
-            throw new AlreadyBusySalleException("Des rendez-vous se chevauchent avec les dates spécifiées à la salle: " + salle1.getEtage() + " " + salle1.getNumeroSalle());
+            throw new AlreadyBusySalleException(salle1.getId(),rendezVous.getDateDebut(),rendezVous.getDateFin());
         }
         return rendezVousRepository.save(rendezVous).getId();
     }
@@ -39,16 +38,15 @@ public class RendezVousServiceImpl implements RendezVousService {
         // todo a verif de ouf
         RendezVous existingRendezVous = getRendezVousById(id);
         if (existingRendezVous == null) {
-            throw new NotFoundException("Rendez-vous non trouvé avec l'ID: " + id);
+            throw new NotFoundException(id,RendezVous.class.toString());
         }
 
-        List<RendezVous> rendezVousChevauchants = rendezVousRepository.findByDateDebutBetweenOrDateFinBetweenAndIdNot(
-                rendezVous.getDateDebut(), rendezVous.getDateFin(),
-                rendezVous.getDateDebut(), rendezVous.getDateFin(), id
+        List<RendezVous> rendezVousChevauchants = rendezVousRepository.findOtherInConflict(
+                rendezVous.getDateDebut(), rendezVous.getDateFin(),id
         );
 
         if (!rendezVousChevauchants.isEmpty()) {
-            throw new AlreadyBusySalleException("Des rendez-vous se chevauchent avec les dates spécifiées.");
+            throw new AlreadyBusySalleException(rendezVous.getSalle().getId(),rendezVous.getDateDebut(),rendezVous.getDateFin());
         }
 
         existingRendezVous.setDateDebut(rendezVous.getDateDebut());
@@ -59,7 +57,7 @@ public class RendezVousServiceImpl implements RendezVousService {
 
     @Override
     public RendezVous getRendezVousById(Long idRendezVous) {
-        return rendezVousRepository.findById(idRendezVous).orElseThrow(() -> new NotFoundException("Rendez-vous not found"));
+        return rendezVousRepository.findById(idRendezVous).orElseThrow(() -> new NotFoundException(idRendezVous,RendezVous.class.toString()));
     }
 
     @Override

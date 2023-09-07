@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -15,10 +16,10 @@ import java.util.Date;
 public class RendezVousDTO {
 
     private Long id;
-    private Date dateDebut;
-    private Date dateFin;
+    private LocalDateTime dateDebut;
+    private LocalDateTime dateFin;
     private Demande demande;
-    private User user;
+    private User creePar;
     private Salle salle;
 
     public static RendezVousDTO toDTO(RendezVous rendezVous){
@@ -29,7 +30,7 @@ public class RendezVousDTO {
                 .dateDebut(rendezVous.getDateDebut())
                 .dateFin(rendezVous.getDateFin())
                 .demande(rendezVous.getDemande())
-                .user(rendezVous.getUser())
+                .creePar(rendezVous.getCreePar())
                 .salle(rendezVous.getSalle())
                 .build();
 

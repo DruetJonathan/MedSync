@@ -3,7 +3,8 @@ package com.jdbk.medsync.mapper;
 import com.jdbk.medsync.model.entity.Demande;
 import com.jdbk.medsync.model.entity.Produit;
 import com.jdbk.medsync.model.form.DemandeForm;
-import com.jdbk.medsync.service.*;
+import com.jdbk.medsync.service.notImpl.ProduitService;
+import com.jdbk.medsync.service.notImpl.UserService;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -32,7 +33,7 @@ public class DemandeMapper {
         List<Produit> produits = produitService.getAllById(form.getProduitIds());
         demande.setProduits( new HashSet<>(produits));
 
-        demande.setUser(userService.getOne(form.getIdUser()));
+        demande.setDemandeur(userService.getOne(form.getDemandeur()));
 
         return demande;
     }

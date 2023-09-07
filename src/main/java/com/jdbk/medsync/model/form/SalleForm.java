@@ -7,9 +7,13 @@ import com.jdbk.medsync.model.entity.Salle;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
+@Data
 
 public class SalleForm {
     @NotBlank
@@ -19,13 +23,12 @@ public class SalleForm {
     private String numeroSalle;
     @NotBlank
     private Machine machine;
-    private Set<RendezVous> rendezVous = new HashSet<>();
+    private Set<Long> rendezVous = new HashSet<>();
     public Salle toEntity() {
         Salle salle = new Salle();
         salle.setEtage(etage);
         salle.setNumeroSalle(numeroSalle);
         salle.setMachine(machine);
-        salle.setRendezVous(rendezVous);
         return salle;
     }
 }

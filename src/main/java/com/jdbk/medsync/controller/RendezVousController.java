@@ -1,18 +1,18 @@
 package com.jdbk.medsync.controller;
 
-import com.jdbk.medsync.exception.AlreadyBusySalleException;
-import com.jdbk.medsync.exception.NotFoundException;
 import com.jdbk.medsync.model.DTO.RendezVousDTO;
 import com.jdbk.medsync.model.entity.RendezVous;
 import com.jdbk.medsync.model.form.RendezVousForm;
-import com.jdbk.medsync.service.DemandeService;
-import com.jdbk.medsync.service.RendezVousService;
-import com.jdbk.medsync.service.SalleService;
-import com.jdbk.medsync.service.UserService;
+import com.jdbk.medsync.service.notImpl.DemandeService;
+import com.jdbk.medsync.service.notImpl.RendezVousService;
+import com.jdbk.medsync.service.notImpl.SalleService;
+import com.jdbk.medsync.service.notImpl.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -32,49 +32,37 @@ public class RendezVousController {
 
     @PostMapping("/add")
     public ResponseEntity<Long> addRendezVous(@RequestBody @Valid RendezVousForm form) {
-        // todo set user demande et salle id
         RendezVous entity = form.toEntity();
-            entity.setUser(userService.getOne(form.getIdUser()));
-            entity.setDemande(demandeService.getOne(form.getDemande()));
-            entity.setSalle(salleService.getOne(form.getSalle()));
-            Long idRendezVous = rendezVousService.addRendezVous(entity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(idRendezVous);
+        entity.setCreePar(userService.getOne(form.getIdUser()));
+        entity.setDemande(demandeService.getOne(form.getDemande()));
+        entity.setSalle(salleService.getOne(form.getSalle()));
+        Long idRendezVous = rendezVousService.addRendezVous(entity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(idRendezVous);
 
     }
 
     @PutMapping("/{id:[0-9]+}")
-    public ResponseEntity<?> updateRendezVous(@PathVariable Long id, @RequestBody @Valid RendezVousForm form) {
+    public ResponseEntity<RendezVousDTO> updateRendezVous(@PathVariable Long id, @RequestBody @Valid RendezVousForm form) {
         RendezVous entity = form.toEntity();
-        try {
-            RendezVous rendezVous = rendezVousService.updateRendezVous(id, entity);
-            return ResponseEntity.status(HttpStatus.OK).body(entity); // TODO Renvoyer DTO
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
-        }
+        RendezVous rendezVous = rendezVousService.updateRendezVous(id, entity);
+        return ResponseEntity.status(HttpStatus.OK).body(RendezVousDTO.toDTO(rendezVous));
     }
 
     @DeleteMapping("/{id:[0-9]+}")
-    public ResponseEntity<?> removeRendezVous(@PathVariable Long id) {
-        try {
-            RendezVous rendezVous = rendezVousService.removeRendezVous(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Rendez-vous deleted");
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rendez-vous not found");
-        }
+    public ResponseEntity<String> removeRendezVous(@PathVariable Long id) {
+        RendezVous rendezVous = rendezVousService.removeRendezVous(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Rendez-vous deleted");
     }
 
     @GetMapping("/{id:[0-9]+}")
-    public ResponseEntity<?> getRendezVousById(@PathVariable Long id) {
-        try {
-            RendezVous rendezVous = rendezVousService.getRendezVousById(id);
-            RendezVousDTO rendezVousDTO = RendezVousDTO.toDTO(rendezVous);
-            return ResponseEntity.status(HttpStatus.OK).body(rendezVousDTO);
-        }catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
-        }
+    public ResponseEntity<RendezVousDTO> getRendezVousById(@PathVariable Long id) {
+        RendezVous rendezVous = rendezVousService.getRendezVousById(id);
+        RendezVousDTO rendezVousDTO = RendezVousDTO.toDTO(rendezVous);
+        return ResponseEntity.status(HttpStatus.OK).body(rendezVousDTO);
     }
+
     @GetMapping
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<List<RendezVousDTO>> getAll() {
         return ResponseEntity.ok(
                 rendezVousService.getAll().stream()
                         .map(RendezVousDTO::toDTO)

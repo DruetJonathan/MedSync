@@ -1,10 +1,10 @@
 package com.jdbk.medsync.controller;
 
-import com.jdbk.medsync.exception.NotFoundException;
+import com.jdbk.medsync.model.DTO.DemandeDTO;
 import com.jdbk.medsync.model.entity.Demande;
 import com.jdbk.medsync.model.entity.Produit;
 import com.jdbk.medsync.model.form.DemandeForm;
-import com.jdbk.medsync.service.*;
+import com.jdbk.medsync.service.notImpl.*;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,55 +33,41 @@ public class DemandeController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addDemande( @RequestBody @Valid DemandeForm form) {
-        // todo set user demande et salle id
+    public ResponseEntity<Long> addDemande( @RequestBody @Valid DemandeForm form) {
         Demande entity = form.toEntity();
-
         List<Produit> produits = produitService.getAllById(form.getProduitIds());
         entity.setProduits( new HashSet<>(produits));
-
-        entity.setUser(userService.getOne(form.getIdUser()));
-
-
-
+        entity.setDemandeur(userService.getOne(form.getDemandeur()));
         Long idDemande = demandeService.addDemande(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(idDemande);
-
     }
 
     @PutMapping("/{id:[0-9]+}")
-    public ResponseEntity<?> updateDemande(@PathVariable Long id, @RequestBody @Valid DemandeForm form) {
+    public ResponseEntity<DemandeDTO> updateDemande(@PathVariable Long id, @RequestBody @Valid DemandeForm form) {
         Demande entity = form.toEntity();
-        try {
             Demande demande = demandeService.updateDemande(id, entity);
-            return ResponseEntity.status(HttpStatus.OK).body(entity);
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Demand not found");
-        }
+            return ResponseEntity.status(HttpStatus.OK).body(DemandeDTO.toDTO(demande));
     }
 
     @DeleteMapping("/{id:[0-9]+}")
-    public ResponseEntity<?> removeDemande(@PathVariable Long id) {
-        try {
+    public ResponseEntity<String> removeDemande(@PathVariable Long id) {
             Demande demande = demandeService.removeDemande(id);
             return ResponseEntity.status(HttpStatus.OK).body("Demand deleted");
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Demand not found");
-        }
     }
 
     @GetMapping("/{id:[0-9]+}")
-    public ResponseEntity<?> getOne(@PathVariable Long id) {
-        try {
+    public ResponseEntity<DemandeDTO> getOne(@PathVariable Long id) {
             Demande demande = demandeService.getOne(id);
-            return ResponseEntity.status(HttpStatus.OK).body(demande);
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Demand not found");
-        }
+            return ResponseEntity.status(HttpStatus.OK).body(DemandeDTO.toDTO(demande));
+
     }
 
     @GetMapping
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(demandeService.getAll());
+    public ResponseEntity<List<DemandeDTO>> getAll() {
+        return ResponseEntity.ok(
+                demandeService.getAll().stream()
+                        .map(DemandeDTO::toDTO)
+                        .toList()
+        );
     }
 }

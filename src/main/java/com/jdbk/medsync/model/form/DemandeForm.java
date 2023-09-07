@@ -19,7 +19,7 @@ public class DemandeForm {
     @NotNull
     private Long duree;
     @NotNull
-    private Long idUser;
+    private Long demandeur;
 
     private Machine machine;
 
