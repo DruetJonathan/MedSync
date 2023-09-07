@@ -5,9 +5,11 @@ import com.jdbk.medsync.exception.NotFoundException;
 import com.jdbk.medsync.model.entity.Produit;
 import com.jdbk.medsync.model.entity.Salle;
 import com.jdbk.medsync.repository.SalleRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class SalleServiceImpl implements SalleService {
     private final SalleRepository salleRepository;
 
@@ -32,7 +34,11 @@ public class SalleServiceImpl implements SalleService {
 
     @Override
     public Salle updateSalle(long id, Salle salle) {
-        return null;
+        if (salle == null && !salleRepository.existsById(id)){
+            throw new NotFoundException("Product not found");
+        }
+        salle.setId(id);
+        return salleRepository.save(salle);
     }
 
     @Override
