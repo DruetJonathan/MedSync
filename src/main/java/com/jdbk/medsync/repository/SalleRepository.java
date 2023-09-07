@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SalleRepository extends JpaRepository<Salle,Long> {
-    boolean existsByNumeroEtageAndNumeroSalle(int numeroEtage, String numeroSalle);
+    boolean existsByEtageAndNumeroSalle(int numeroEtage, String numeroSalle);
 
 }

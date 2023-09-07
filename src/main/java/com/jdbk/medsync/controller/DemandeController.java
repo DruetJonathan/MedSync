@@ -1,11 +1,11 @@
 package com.jdbk.medsync.controller;
 
-import com.jdbk.medsync.exception.AlreadyExistException;
 import com.jdbk.medsync.exception.NotFoundException;
 import com.jdbk.medsync.model.entity.Demande;
 import com.jdbk.medsync.model.form.DemandeForm;
 import com.jdbk.medsync.service.DemandeService;
 import com.jdbk.medsync.service.RendezVousService;
+import com.jdbk.medsync.service.SalleService;
 import com.jdbk.medsync.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -22,8 +22,9 @@ public class DemandeController {
     private final DemandeService demandeService;
     private final UserService userService;
 
-    public DemandeController(RendezVousService rendezVousService, DemandeService demandeService, UserService userService) {
+    public DemandeController(RendezVousService rendezVousService, SalleService salleService, DemandeService demandeService, UserService userService) {
         this.rendezVousService = rendezVousService;
+        this.salleService = salleService;
         this.demandeService = demandeService;
         this.userService = userService;
     }

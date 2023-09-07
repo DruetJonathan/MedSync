@@ -20,7 +20,7 @@ public class SalleServiceImpl implements SalleService {
     @Override
     public Long addSalle(Salle salle) {
         salle.setId(null);
-        if (salleRepository.existsByNumeroEtageAndNumeroSalle(salle.getEtage(),salle.getNumeroSalle())){
+        if (salleRepository.existsByEtageAndNumeroSalle(salle.getEtage(),salle.getNumeroSalle())){
             throw new AlreadyExistException("Salle with etage and number of salle already exist");
         }
         salle = salleRepository.save(salle);
@@ -35,7 +35,7 @@ public class SalleServiceImpl implements SalleService {
     @Override
     public Salle updateSalle(long id, Salle salle) {
         if (salle == null && !salleRepository.existsById(id)){
-            throw new NotFoundException("Product not found");
+            throw new NotFoundException("Salle not found");
         }
         salle.setId(id);
         return salleRepository.save(salle);
