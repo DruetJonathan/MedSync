@@ -26,7 +26,6 @@ public class DemandeForm {
     public Demande toEntity() {
         Demande demande = new Demande();
         demande.setDuree(this.duree);
-        // TODO verifier le nulml du rendez vous
         demande.setMachine(this.machine);
 
         return demande;
