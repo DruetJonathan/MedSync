@@ -7,6 +7,7 @@ import com.jdbk.medsync.model.entity.Produit;
 import com.jdbk.medsync.repository.ProduitRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -69,6 +70,11 @@ public class ProduitServiceImpl implements ProduitService {
         Produit produit = getProduitById(produitId);
         produit.setQuantite( nouvelleQuantite );
         return produitRepository.save(produit);
+    }
+
+    @Override
+    public List<Produit> getAllById(Collection<Long> produitIds) {
+        return produitRepository.findAllById(produitIds);
     }
 
 

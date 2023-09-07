@@ -31,18 +31,15 @@ public class RendezVousController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addRendezVous(@RequestBody @Valid RendezVousForm form) {
+    public ResponseEntity<Long> addRendezVous(@RequestBody @Valid RendezVousForm form) {
         // todo set user demande et salle id
         RendezVous entity = form.toEntity();
-        try {
             entity.setUser(userService.getOne(form.getIdUser()));
             entity.setDemande(demandeService.getOne(form.getDemande()));
             entity.setSalle(salleService.getOne(form.getSalle()));
             Long idRendezVous = rendezVousService.addRendezVous(entity);
             return ResponseEntity.status(HttpStatus.CREATED).body(idRendezVous);
-        } catch (AlreadyBusySalleException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Already exist rdv at this time: " + entity.getDateDebut() + "  " + entity.getDateFin());
-        }
+
     }
 
     @PutMapping("/{id:[0-9]+}")
@@ -50,11 +47,9 @@ public class RendezVousController {
         RendezVous entity = form.toEntity();
         try {
             RendezVous rendezVous = rendezVousService.updateRendezVous(id, entity);
-            return ResponseEntity.status(HttpStatus.OK).body(entity);
+            return ResponseEntity.status(HttpStatus.OK).body(entity); // TODO Renvoyer DTO
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
-        } catch (AlreadyBusySalleException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Already exist rdv at this time: " + entity.getDateDebut() + "  " + entity.getDateFin());
         }
     }
 

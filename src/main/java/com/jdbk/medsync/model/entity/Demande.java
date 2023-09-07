@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity @Getter @Setter
@@ -20,12 +19,11 @@ public class Demande {
     private Long duree;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "demandeur_id", referencedColumnName = "id")
+    private User demandeur;
 
     public Machine machine;
 
-    @OneToOne
-    @JoinColumn(name = "rendezvous_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "demande")
     private RendezVous rendezVous;
 }

@@ -15,21 +15,17 @@ import java.util.Set;
 @Builder
 public class DemandeForm {
 
-    private Set<Produit> produits;
+    private Set<Long> produitIds;
     @NotNull
     private Long duree;
     @NotNull
     private Long idUser;
 
     private Machine machine;
-    @NotNull
-    private Long idRendezVous;
 
     public Demande toEntity() {
         Demande demande = new Demande();
-        demande.setProduits(this.produits);
         demande.setDuree(this.duree);
-        demande.setRendezVous(null);
         // TODO verifier le nulml du rendez vous
         demande.setMachine(this.machine);
 

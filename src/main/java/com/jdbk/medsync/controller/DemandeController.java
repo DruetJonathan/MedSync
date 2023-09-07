@@ -2,15 +2,16 @@ package com.jdbk.medsync.controller;
 
 import com.jdbk.medsync.exception.NotFoundException;
 import com.jdbk.medsync.model.entity.Demande;
+import com.jdbk.medsync.model.entity.Produit;
 import com.jdbk.medsync.model.form.DemandeForm;
-import com.jdbk.medsync.service.DemandeService;
-import com.jdbk.medsync.service.RendezVousService;
-import com.jdbk.medsync.service.SalleService;
-import com.jdbk.medsync.service.UserService;
+import com.jdbk.medsync.service.*;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashSet;
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -21,12 +22,14 @@ public class DemandeController {
     private final SalleService salleService;
     private final DemandeService demandeService;
     private final UserService userService;
+    private final ProduitService produitService;
 
-    public DemandeController(RendezVousService rendezVousService, SalleService salleService, DemandeService demandeService, UserService userService) {
+    public DemandeController(RendezVousService rendezVousService, SalleService salleService, DemandeService demandeService, UserService userService, ProduitService produitService) {
         this.rendezVousService = rendezVousService;
         this.salleService = salleService;
         this.demandeService = demandeService;
         this.userService = userService;
+        this.produitService = produitService;
     }
 
     @PostMapping("/add")
@@ -34,9 +37,15 @@ public class DemandeController {
         // todo set user demande et salle id
         Demande entity = form.toEntity();
 
-            entity.setUser(userService.getOne(form.getIdUser()));
-            Long idDemande = demandeService.addDemande(entity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(idDemande);
+        List<Produit> produits = produitService.getAllById(form.getProduitIds());
+        entity.setProduits( new HashSet<>(produits));
+
+        entity.setUser(userService.getOne(form.getIdUser()));
+
+
+
+        Long idDemande = demandeService.addDemande(entity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(idDemande);
 
     }
 

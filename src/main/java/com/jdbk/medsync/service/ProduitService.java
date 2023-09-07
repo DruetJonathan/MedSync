@@ -2,7 +2,9 @@ package com.jdbk.medsync.service;
 
 import com.jdbk.medsync.model.entity.Produit;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface ProduitService {
 
@@ -24,4 +26,5 @@ public interface ProduitService {
     // Réduire la quantité d'un produit en stock
     public Produit updateStockProduit(Long produitId, Long quantiteReduite);
 
+    List<Produit> getAllById(Collection<Long> produitIds);
 }

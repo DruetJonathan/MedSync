@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -14,15 +15,16 @@ public class RendezVous {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date dateDebut;
-    private Date dateFin;
+    private LocalDateTime dateDebut;
+    private LocalDateTime dateFin;
 
-    @OneToOne(mappedBy = "rendezVous")
+    @OneToOne
+    @JoinColumn(name = "rendezvous_id")
     private Demande demande;
 
     @ManyToOne
-    @JoinColumn(name = "user_id") // Nom de la colonne de jointure
-    private User user;
+    @JoinColumn(name = "createur_id") // Nom de la colonne de jointure
+    private User creePar;
 
     @ManyToOne
     @JoinColumn(name = "salle_id") // Nom de la colonne de jointure
