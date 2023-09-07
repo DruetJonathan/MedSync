@@ -17,7 +17,7 @@ public class Salle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int etage;
+    private Integer etage;
     private String numeroSalle;
 
     private Machine machine;
