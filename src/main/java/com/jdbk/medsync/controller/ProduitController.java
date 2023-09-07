@@ -7,6 +7,7 @@ import com.jdbk.medsync.service.notImpl.ProduitService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class ProduitController {
         this.produitService = produitService;
     }
 
+    @PreAuthorize("hasRole('ADMINISTRATIF')")
     @PostMapping("/add")
     public ResponseEntity<Long> addProduit(@RequestBody @Valid ProduitForm form) {
         Produit entity = form.toEntity();
@@ -29,6 +31,7 @@ public class ProduitController {
         return ResponseEntity.status(HttpStatus.CREATED).body(idProduit);
     }
 
+    @PreAuthorize("hasRole('ADMINISTRATIF')")
     @PutMapping("/{id:[0-9]+}")
     public ResponseEntity<ProduitDTO> updateProduit(@PathVariable Long id, @RequestBody @Valid ProduitForm form) {
         Produit entity = form.toEntity();
@@ -36,6 +39,7 @@ public class ProduitController {
         return ResponseEntity.status(HttpStatus.OK).body(ProduitDTO.toDTO(entity));
     }
 
+    @PreAuthorize("hasRole('ADMINISTRATIF')")
     @DeleteMapping("/{id:[0-9]+}")
     public ResponseEntity<String> removeProduit(@PathVariable Long id) {
         Produit produit = produitService.removeProduit(id);
@@ -43,14 +47,14 @@ public class ProduitController {
 
     }
 
-
+    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
     @GetMapping("/{id:[0-9]+}")
     public ResponseEntity<ProduitDTO> getProduitById(@PathVariable Long id) {
         Produit produit = produitService.getProduitById(id);
         ProduitDTO produitDTO = ProduitDTO.toDTO(produit);
         return ResponseEntity.status(HttpStatus.OK).body(produitDTO);
     }
-
+    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
     @GetMapping
     public ResponseEntity<List<ProduitDTO>> getAll() {
         return ResponseEntity.ok(

@@ -2,6 +2,7 @@ package com.jdbk.medsync.service.impl;
 
 import com.jdbk.medsync.exception.NotFoundException;
 import com.jdbk.medsync.model.entity.Demande;
+import com.jdbk.medsync.model.entity.User;
 import com.jdbk.medsync.repository.DemandeRepository;
 import com.jdbk.medsync.service.notImpl.DemandeService;
 import org.springframework.stereotype.Service;
@@ -52,4 +53,10 @@ public class DemandeServiceImpl implements DemandeService {
         return demandeRepository.findAll().stream()
                 .toList();
     }
+
+    @Override
+    public List<Demande> getAllDemandeForDemandeur(User demandeur) {
+        return demandeRepository.getDemandesByDemandeur(demandeur);
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.jdbk.medsync.service.notImpl;
 
 import com.jdbk.medsync.model.entity.Demande;
+import com.jdbk.medsync.model.entity.User;
 
 import java.util.List;
 
@@ -16,5 +17,6 @@ public interface DemandeService {
 
     public List<Demande> getAll();
 
+    public List<Demande> getAllDemandeForDemandeur(User demandeur);
 
 }

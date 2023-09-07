@@ -8,6 +8,7 @@ import com.jdbk.medsync.service.notImpl.SalleService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -24,6 +25,7 @@ public class SalleController {
         this.salleService = salleService;
         this.rendezVousService = rendezVousService;
     }
+    @PreAuthorize("hasRole('ADMINISTRATIF')")
 
     @PostMapping("/add")
     public ResponseEntity<Long> addSalle(@RequestBody @Valid SalleForm form) {
@@ -32,6 +34,7 @@ public class SalleController {
         form.setRendezVous(new HashSet<>());
         return ResponseEntity.status(HttpStatus.CREATED).body(idSalle);
     }
+    @PreAuthorize("hasRole('ADMINISTRATIF')")
 
     @PutMapping("/{id:[0-9]+}")
     public ResponseEntity<SalleDTO> updateSalle(@PathVariable Long id, @RequestBody @Valid SalleForm form) {
@@ -40,6 +43,7 @@ public class SalleController {
             return ResponseEntity.status(HttpStatus.OK).body(SalleDTO.toDTO(salle));
 
     }
+    @PreAuthorize("hasRole('ADMINISTRATIF')")
 
     @DeleteMapping("/{id:[0-9]+}")
     public ResponseEntity<String> removeSalle(@PathVariable Long id) {
@@ -48,6 +52,7 @@ public class SalleController {
 
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
 
     @GetMapping("/{id:[0-9]+}")
     public ResponseEntity<SalleDTO> getSalleById(@PathVariable Long id) {
@@ -56,6 +61,7 @@ public class SalleController {
             return ResponseEntity.status(HttpStatus.OK).body(SalleDTO.toDTO(salle));
 
     }
+    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
 
     @GetMapping
     public ResponseEntity<List<SalleDTO>> getAll() {

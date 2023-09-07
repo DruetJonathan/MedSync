@@ -33,4 +33,6 @@ public interface RendezVousRepository extends JpaRepository<RendezVous,Long> {
             LocalDateTime dateFin,
             Long id
     );
+    @Query("SELECT r FROM RendezVous r JOIN r.demande d JOIN d.demandeur u  WHERE u.id = :userId")
+    public List<RendezVous> getRendezVousByUserId(Long userId);
 }

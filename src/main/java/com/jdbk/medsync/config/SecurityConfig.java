@@ -1,5 +1,7 @@
 package com.jdbk.medsync.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,9 +13,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
-@EnableMethodSecurity(securedEnabled = true)
+@EnableMethodSecurity(securedEnabled=true)
 public class SecurityConfig {
 
     @Bean
@@ -32,7 +38,9 @@ public class SecurityConfig {
                             .anyRequest().permitAll();
                 })
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        ;
+
+
+        http.exceptionHandling( exHandlingConfig -> exHandlingConfig.accessDeniedHandler(handleAccessDenied()) );
 
         return http.build();
     }
@@ -40,5 +48,19 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AccessDeniedHandler handleAccessDenied(){
+        return (req, resp, ex) -> {
+            Map<String,Object> map = new HashMap<>();
+            map.put("method", req.getMethod());
+            map.put("uri", req.getRequestURI());
+            map.put("message", ex.getMessage());
+
+            ObjectMapper mapper = new ObjectMapper();
+
+            resp.getWriter().println(mapper.writeValueAsString( map ));
+        };
     }
 }

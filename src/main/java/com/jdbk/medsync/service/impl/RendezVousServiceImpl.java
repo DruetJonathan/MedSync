@@ -2,11 +2,17 @@ package com.jdbk.medsync.service.impl;
 
 import com.jdbk.medsync.exception.AlreadyBusySalleException;
 import com.jdbk.medsync.exception.NotFoundException;
+import com.jdbk.medsync.model.DTO.DemandeDTO;
 import com.jdbk.medsync.model.entity.RendezVous;
 import com.jdbk.medsync.model.entity.Salle;
+import com.jdbk.medsync.model.entity.User;
 import com.jdbk.medsync.repository.RendezVousRepository;
 import com.jdbk.medsync.service.notImpl.RendezVousService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -72,4 +78,10 @@ public class RendezVousServiceImpl implements RendezVousService {
         rendezVousRepository.delete(rendezVous);
         return rendezVous;
     }
+
+    @Override
+    public List<RendezVous> getAllRendezVousForUser(User user) {
+        return rendezVousRepository.getRendezVousByUserId(user.getId());
+    }
+
 }

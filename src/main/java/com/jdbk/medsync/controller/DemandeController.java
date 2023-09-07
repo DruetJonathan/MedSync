@@ -3,11 +3,13 @@ package com.jdbk.medsync.controller;
 import com.jdbk.medsync.model.DTO.DemandeDTO;
 import com.jdbk.medsync.model.entity.Demande;
 import com.jdbk.medsync.model.entity.Produit;
+import com.jdbk.medsync.model.entity.User;
 import com.jdbk.medsync.model.form.DemandeForm;
 import com.jdbk.medsync.service.notImpl.*;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -31,7 +33,7 @@ public class DemandeController {
         this.userService = userService;
         this.produitService = produitService;
     }
-
+    @PreAuthorize("hasRole('MEDECIN')")
     @PostMapping("/add")
     public ResponseEntity<Long> addDemande( @RequestBody @Valid DemandeForm form) {
         Demande entity = form.toEntity();
@@ -41,7 +43,7 @@ public class DemandeController {
         Long idDemande = demandeService.addDemande(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(idDemande);
     }
-
+    @PreAuthorize("hasRole('ADMINISTRATIF')")
     @PutMapping("/{id:[0-9]+}")
     public ResponseEntity<DemandeDTO> updateDemande(@PathVariable Long id, @RequestBody @Valid DemandeForm form) {
         Demande entity = form.toEntity();
@@ -51,12 +53,14 @@ public class DemandeController {
             return ResponseEntity.status(HttpStatus.OK).body(DemandeDTO.toDTO(demande));
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
     @DeleteMapping("/{id:[0-9]+}")
     public ResponseEntity<String> removeDemande(@PathVariable Long id) {
             Demande demande = demandeService.removeDemande(id);
             return ResponseEntity.status(HttpStatus.OK).body("Demand deleted");
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
     @GetMapping("/{id:[0-9]+}")
     public ResponseEntity<DemandeDTO> getOne(@PathVariable Long id) {
             Demande demande = demandeService.getOne(id);
@@ -64,10 +68,21 @@ public class DemandeController {
 
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
     @GetMapping
     public ResponseEntity<List<DemandeDTO>> getAll() {
         return ResponseEntity.ok(
                 demandeService.getAll().stream()
+                        .map(DemandeDTO::toDTO)
+                        .toList()
+        );
+    }
+    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
+    @GetMapping("/specificDemande/user/{id:[0-9]+}/")
+    public ResponseEntity<List<DemandeDTO>> getAllDemandeForDemandeur(@PathVariable Long idUser) {
+        User user = userService.getOne(idUser);
+        return ResponseEntity.ok(
+                demandeService.getAllDemandeForDemandeur(user).stream()
                         .map(DemandeDTO::toDTO)
                         .toList()
         );
