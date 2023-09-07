@@ -78,8 +78,8 @@ public class DemandeController {
         );
     }
     @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
-    @GetMapping("/specificDemande/user/{id:[0-9]+}/")
-    public ResponseEntity<List<DemandeDTO>> getAllDemandeForDemandeur(@PathVariable Long idUser) {
+    @GetMapping("/specificDemande/user/{id:[0-9]+}")
+    public ResponseEntity<List<DemandeDTO>> getAllDemandeForDemandeur(@PathVariable("id") Long idUser) {
         User user = userService.getOne(idUser);
         return ResponseEntity.ok(
                 demandeService.getAllDemandeForDemandeur(user).stream()

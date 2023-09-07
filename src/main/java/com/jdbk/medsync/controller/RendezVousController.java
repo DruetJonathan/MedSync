@@ -77,8 +77,8 @@ public class RendezVousController {
     }
 
     @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
-    @GetMapping("/specificRendezVous/user/{id:[0-9]+}/")
-    public ResponseEntity<List<RendezVousDTO>> getAllRendezVousForUser(@PathVariable Long idUser) {
+    @GetMapping("/specificRendezVous/user/{id:[0-9]+}")
+    public ResponseEntity<List<RendezVousDTO>> getAllRendezVousForUser(@PathVariable("id") Long idUser) {
         User user = userService.getOne(idUser);
         return ResponseEntity.ok(
                 rendezVousService.getAllRendezVousForUser(user).stream()
