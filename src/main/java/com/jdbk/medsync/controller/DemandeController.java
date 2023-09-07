@@ -46,6 +46,7 @@ public class DemandeController {
     public ResponseEntity<DemandeDTO> updateDemande(@PathVariable Long id, @RequestBody @Valid DemandeForm form) {
         Demande entity = form.toEntity();
             Demande demande = demandeService.updateDemande(id, entity);
+            demande.setDemandeur(userService.getOne(form.getDemandeur()));
             return ResponseEntity.status(HttpStatus.OK).body(DemandeDTO.toDTO(demande));
     }
 

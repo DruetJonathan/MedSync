@@ -15,6 +15,7 @@ import java.util.Set;
 @Builder
 public class DemandeForm {
 
+    @NotNull
     private Set<Long> produitIds;
     @NotNull
     private Long duree;
@@ -27,7 +28,6 @@ public class DemandeForm {
         Demande demande = new Demande();
         demande.setDuree(this.duree);
         demande.setMachine(this.machine);
-
         return demande;
     }
 }
