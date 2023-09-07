@@ -2,6 +2,7 @@ package com.jdbk.medsync.service;
 
 import com.jdbk.medsync.exception.AlreadyExistException;
 import com.jdbk.medsync.exception.NotFoundException;
+import com.jdbk.medsync.model.entity.Produit;
 import com.jdbk.medsync.model.entity.Salle;
 import com.jdbk.medsync.repository.SalleRepository;
 
@@ -36,11 +37,14 @@ public class SalleServiceImpl implements SalleService {
 
     @Override
     public Salle removeSalle(Long saleId) {
-        return null;
+        Salle salle = getOne(saleId);
+        salleRepository.delete(salle);
+        return salle;
     }
 
     @Override
     public List<Salle> getAll() {
-        return null;
+        return salleRepository.findAll().stream()
+                .toList();
     }
 }
