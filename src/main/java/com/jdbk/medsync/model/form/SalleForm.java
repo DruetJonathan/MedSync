@@ -7,6 +7,7 @@ import com.jdbk.medsync.model.entity.Salle;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,12 +17,12 @@ import java.util.Set;
 @Data
 
 public class SalleForm {
-    @NotBlank
 
+    @NotNull
     private Integer etage;
-    @NotBlank
+    @NotNull
     private String numeroSalle;
-    @NotBlank
+    @NotNull
     private Machine machine;
     private Set<Long> rendezVous = new HashSet<>();
     public Salle toEntity() {
