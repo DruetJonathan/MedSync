@@ -26,7 +26,7 @@ public class Produit {
     @Column(name = "produit_date_expiration", nullable = false)
     private LocalDateTime dateExpiration;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "produit_demande",
             joinColumns = @JoinColumn(name = "produit_id", nullable = false),

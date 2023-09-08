@@ -2,9 +2,11 @@ package com.jdbk.medsync.service.impl;
 
 import com.jdbk.medsync.exception.NotFoundException;
 import com.jdbk.medsync.model.entity.Demande;
+import com.jdbk.medsync.model.entity.Produit;
 import com.jdbk.medsync.model.entity.User;
 import com.jdbk.medsync.repository.DemandeRepository;
 import com.jdbk.medsync.service.notImpl.DemandeService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +21,12 @@ public class DemandeServiceImpl implements DemandeService {
     }
 
     @Override
+    @Transactional
     public Long addDemande(Demande demande) {
+        // pour eviter changer le côté fort et faible sinon on doit for
+        for (Produit produit:demande.getProduits()){
+            produit.getDemandes().add(demande);
+        }
         demande.setId(null);
         demande = demandeRepository.save(demande);
         return demande.getId();

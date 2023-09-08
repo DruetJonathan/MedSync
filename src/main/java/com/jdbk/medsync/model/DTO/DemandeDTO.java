@@ -9,13 +9,14 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
 public class DemandeDTO {
 
     private Long id;
-    private Set<Produit> produits;
+    private Set<ProduitDTO> produits;
     private Long duree;
     private UserDTO demandeur;
     private Machine machine;
@@ -28,7 +29,8 @@ public class DemandeDTO {
 
         return DemandeDTO.builder()
                 .id(demande.getId())
-                .produits(demande.getProduits())
+//                .produits(demande.getProduits())
+                .produits(demande.getProduits().stream().map(ProduitDTO::toDTO).collect(Collectors.toSet()))
                 .duree(demande.getDuree())
                 .demandeur(UserDTO.toDTO(demande.getDemandeur()))
                 .machine(demande.getMachine())

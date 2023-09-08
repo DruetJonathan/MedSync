@@ -39,16 +39,18 @@ public class DemandeController {
         Demande entity = form.toEntity();
         List<Produit> produits = produitService.getAllById(form.getProduitIds());
         entity.setProduits( new HashSet<>(produits));
-        // TODO convertir en dto
         entity.setDemandeur(userService.getOne(form.getDemandeur()));
         Long idDemande = demandeService.addDemande(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(idDemande);
     }
+    //todo a modifier l'acces => juste pour test
     @PreAuthorize("hasAuthority('ADMINISTRATIF')")
     @PutMapping("/{id:[0-9]+}")
     public ResponseEntity<DemandeDTO> updateDemande(@PathVariable Long id, @RequestBody @Valid DemandeForm form) {
         Demande entity = form.toEntity();
         entity.setDemandeur(userService.getOne(form.getDemandeur()));
+        entity.setProduits(new HashSet<>(produitService.getAllById(form.getProduitIds())));
+
         Demande demande = demandeService.updateDemande(id, entity);
 //            demande.setDemandeur());
             return ResponseEntity.status(HttpStatus.OK).body(DemandeDTO.toDTO(demande));

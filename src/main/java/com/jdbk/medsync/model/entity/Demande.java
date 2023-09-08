@@ -14,7 +14,7 @@ public class Demande {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToMany(mappedBy = "demandes")
+    @ManyToMany(mappedBy = "demandes",cascade = {CascadeType.ALL})
     Set<Produit> produits;
 
     private Long duree;
