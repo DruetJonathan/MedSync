@@ -33,17 +33,18 @@ public class DemandeController {
         this.userService = userService;
         this.produitService = produitService;
     }
-    @PreAuthorize("hasRole('MEDECIN')")
+    @PreAuthorize("hasAuthority('MEDECIN')")
     @PostMapping("/add")
     public ResponseEntity<Long> addDemande( @RequestBody @Valid DemandeForm form) {
         Demande entity = form.toEntity();
         List<Produit> produits = produitService.getAllById(form.getProduitIds());
         entity.setProduits( new HashSet<>(produits));
+        // TODO convertir en dto
         entity.setDemandeur(userService.getOne(form.getDemandeur()));
         Long idDemande = demandeService.addDemande(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(idDemande);
     }
-    @PreAuthorize("hasRole('ADMINISTRATIF')")
+    @PreAuthorize("hasAuthority('ADMINISTRATIF')")
     @PutMapping("/{id:[0-9]+}")
     public ResponseEntity<DemandeDTO> updateDemande(@PathVariable Long id, @RequestBody @Valid DemandeForm form) {
         Demande entity = form.toEntity();
@@ -53,14 +54,14 @@ public class DemandeController {
             return ResponseEntity.status(HttpStatus.OK).body(DemandeDTO.toDTO(demande));
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRATIF','MEDECIN')")
     @DeleteMapping("/{id:[0-9]+}")
     public ResponseEntity<String> removeDemande(@PathVariable Long id) {
             Demande demande = demandeService.removeDemande(id);
             return ResponseEntity.status(HttpStatus.OK).body("Demand deleted");
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRATIF','MEDECIN')")
     @GetMapping("/{id:[0-9]+}")
     public ResponseEntity<DemandeDTO> getOne(@PathVariable Long id) {
             Demande demande = demandeService.getOne(id);
@@ -68,7 +69,7 @@ public class DemandeController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRATIF','MEDECIN')")
     @GetMapping
     public ResponseEntity<List<DemandeDTO>> getAll() {
         return ResponseEntity.ok(
@@ -77,7 +78,8 @@ public class DemandeController {
                         .toList()
         );
     }
-    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
+//    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
+    @PreAuthorize("hasAuthority('MEDECIN')")
     @GetMapping("/specificDemande/user/{id:[0-9]+}")
     public ResponseEntity<List<DemandeDTO>> getAllDemandeForDemandeur(@PathVariable("id") Long idUser) {
         User user = userService.getOne(idUser);

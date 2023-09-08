@@ -17,7 +17,7 @@ public class DemandeDTO {
     private Long id;
     private Set<Produit> produits;
     private Long duree;
-    private User demandeur;
+    private UserDTO demandeur;
     private Machine machine;
     private RendezVous rendezVous;
 
@@ -30,7 +30,7 @@ public class DemandeDTO {
                 .id(demande.getId())
                 .produits(demande.getProduits())
                 .duree(demande.getDuree())
-                .demandeur(demande.getDemandeur())
+                .demandeur(UserDTO.toDTO(demande.getDemandeur()))
                 .machine(demande.getMachine())
                 .rendezVous(demande.getRendezVous())
                 .build();

@@ -1,5 +1,6 @@
 package com.jdbk.medsync.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.jdbk.medsync.model.Enum.Machine;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class Demande {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "demandeur_id", referencedColumnName = "id")
+    @JsonBackReference
     private User demandeur;
 
     public Machine machine;

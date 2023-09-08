@@ -25,7 +25,7 @@ public class SalleController {
         this.salleService = salleService;
         this.rendezVousService = rendezVousService;
     }
-    @PreAuthorize("hasRole('ADMINISTRATIF')")
+    @PreAuthorize("hasAuthority('ADMINISTRATIF')")
 
     @PostMapping("/add")
     public ResponseEntity<Long> addSalle(@RequestBody @Valid SalleForm form) {
@@ -34,7 +34,7 @@ public class SalleController {
         form.setRendezVous(new HashSet<>());
         return ResponseEntity.status(HttpStatus.CREATED).body(idSalle);
     }
-    @PreAuthorize("hasRole('ADMINISTRATIF')")
+    @PreAuthorize("hasAuthority('ADMINISTRATIF')")
 
     @PutMapping("/{id:[0-9]+}")
     public ResponseEntity<SalleDTO> updateSalle(@PathVariable Long id, @RequestBody @Valid SalleForm form) {
@@ -43,7 +43,7 @@ public class SalleController {
             return ResponseEntity.status(HttpStatus.OK).body(SalleDTO.toDTO(salle));
 
     }
-    @PreAuthorize("hasRole('ADMINISTRATIF')")
+    @PreAuthorize("hasAuthority('ADMINISTRATIF')")
 
     @DeleteMapping("/{id:[0-9]+}")
     public ResponseEntity<String> removeSalle(@PathVariable Long id) {
@@ -52,7 +52,7 @@ public class SalleController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRATIF','MEDECIN')")
 
     @GetMapping("/{id:[0-9]+}")
     public ResponseEntity<SalleDTO> getSalleById(@PathVariable Long id) {
@@ -61,7 +61,7 @@ public class SalleController {
             return ResponseEntity.status(HttpStatus.OK).body(SalleDTO.toDTO(salle));
 
     }
-    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRATIF','MEDECIN')")
 
     @GetMapping
     public ResponseEntity<List<SalleDTO>> getAll() {

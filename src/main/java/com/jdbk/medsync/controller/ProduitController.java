@@ -23,7 +23,7 @@ public class ProduitController {
         this.produitService = produitService;
     }
 
-    @PreAuthorize("hasRole('ADMINISTRATIF')")
+    @PreAuthorize("hasAuthority('ADMINISTRATIF')")
     @PostMapping("/add")
     public ResponseEntity<Long> addProduit(@RequestBody @Valid ProduitForm form) {
         Produit entity = form.toEntity();
@@ -31,7 +31,7 @@ public class ProduitController {
         return ResponseEntity.status(HttpStatus.CREATED).body(idProduit);
     }
 
-    @PreAuthorize("hasRole('ADMINISTRATIF')")
+    @PreAuthorize("hasAuthority('ADMINISTRATIF')")
     @PutMapping("/{id:[0-9]+}")
     public ResponseEntity<ProduitDTO> updateProduit(@PathVariable Long id, @RequestBody @Valid ProduitForm form) {
         Produit entity = form.toEntity();
@@ -39,7 +39,7 @@ public class ProduitController {
         return ResponseEntity.status(HttpStatus.OK).body(ProduitDTO.toDTO(entity));
     }
 
-    @PreAuthorize("hasRole('ADMINISTRATIF')")
+    @PreAuthorize("hasAuthority('ADMINISTRATIF')")
     @DeleteMapping("/{id:[0-9]+}")
     public ResponseEntity<String> removeProduit(@PathVariable Long id) {
         Produit produit = produitService.removeProduit(id);
@@ -47,14 +47,14 @@ public class ProduitController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRATIF','MEDECIN')")
     @GetMapping("/{id:[0-9]+}")
     public ResponseEntity<ProduitDTO> getProduitById(@PathVariable Long id) {
         Produit produit = produitService.getProduitById(id);
         ProduitDTO produitDTO = ProduitDTO.toDTO(produit);
         return ResponseEntity.status(HttpStatus.OK).body(produitDTO);
     }
-    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRATIF','MEDECIN')")
     @GetMapping
     public ResponseEntity<List<ProduitDTO>> getAll() {
         return ResponseEntity.ok(
@@ -63,7 +63,7 @@ public class ProduitController {
                         .toList()
         );
     }
-
+    @PreAuthorize("hasAuthority('ADMINISTRATIF')")
     @PutMapping("/{id:[0-9]+}/updateStock")
     public ResponseEntity<ProduitDTO> updateStockProduit(@PathVariable Long id, @RequestParam Long nouvelleQuantite) {
             Produit produit = produitService.updateStockProduit(id, nouvelleQuantite);

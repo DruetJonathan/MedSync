@@ -32,7 +32,7 @@ public class RendezVousController {
         this.demandeService = demandeService;
         this.userService = userService;
     }
-    @PreAuthorize("hasRole('ADMINISTRATIF')")
+    @PreAuthorize("hasAuthority('ADMINISTRATIF')")
 
     @PostMapping("/add")
     public ResponseEntity<Long> addRendezVous(@RequestBody @Valid RendezVousForm form) {
@@ -44,7 +44,7 @@ public class RendezVousController {
         return ResponseEntity.status(HttpStatus.CREATED).body(idRendezVous);
 
     }
-    @PreAuthorize("hasRole('ADMINISTRATIF')")
+    @PreAuthorize("hasAuthority('ADMINISTRATIF')")
 
     @PutMapping("/{id:[0-9]+}")
     public ResponseEntity<RendezVousDTO> updateRendezVous(@PathVariable Long id, @RequestBody @Valid RendezVousForm form) {
@@ -52,13 +52,13 @@ public class RendezVousController {
         RendezVous rendezVous = rendezVousService.updateRendezVous(id, entity);
         return ResponseEntity.status(HttpStatus.OK).body(RendezVousDTO.toDTO(rendezVous));
     }
-    @PreAuthorize("hasRole('ADMINISTRATIF')")
+    @PreAuthorize("hasAuthority('ADMINISTRATIF')")
     @DeleteMapping("/{id:[0-9]+}")
     public ResponseEntity<String> removeRendezVous(@PathVariable Long id) {
         RendezVous rendezVous = rendezVousService.removeRendezVous(id);
         return ResponseEntity.status(HttpStatus.OK).body("Rendez-vous deleted");
     }
-    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRATIF','MEDECIN')")
     @GetMapping("/{id:[0-9]+}")
     public ResponseEntity<RendezVousDTO> getRendezVousById(@PathVariable Long id) {
         RendezVous rendezVous = rendezVousService.getRendezVousById(id);
@@ -66,7 +66,7 @@ public class RendezVousController {
         return ResponseEntity.status(HttpStatus.OK).body(rendezVousDTO);
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRATIF','MEDECIN')")
     @GetMapping
     public ResponseEntity<List<RendezVousDTO>> getAll() {
         return ResponseEntity.ok(
@@ -76,7 +76,7 @@ public class RendezVousController {
         );
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRATIF','MEDECIN')")
     @GetMapping("/specificRendezVous/user/{id:[0-9]+}")
     public ResponseEntity<List<RendezVousDTO>> getAllRendezVousForUser(@PathVariable("id") Long idUser) {
         User user = userService.getOne(idUser);

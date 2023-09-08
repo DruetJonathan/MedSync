@@ -10,6 +10,7 @@ import com.jdbk.medsync.utils.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,6 +44,7 @@ public class UserController {
 
     }
 
+    @PreAuthorize("hasAnyAuthority('MEDECIN','ADMINISTRATIF')")
     public ResponseEntity<UserDTO> getOne( @RequestBody Long id) {
         User user = userService.getOne(id);
         UserDTO userDTO = UserDTO.toDTO(user);

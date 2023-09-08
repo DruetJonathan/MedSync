@@ -1,5 +1,6 @@
 package com.jdbk.medsync.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.jdbk.medsync.model.Enum.Role;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -34,6 +35,8 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToMany(mappedBy = "demandeur")
+    @JsonBackReference
+
     private Set<Demande> demandes;
 
 
