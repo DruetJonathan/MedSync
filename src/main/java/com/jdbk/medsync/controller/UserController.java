@@ -1,5 +1,6 @@
 package com.jdbk.medsync.controller;
 
+import com.jdbk.medsync.model.DTO.UserDTO;
 import com.jdbk.medsync.model.DTO.UserTokenDTO;
 import com.jdbk.medsync.model.entity.User;
 import com.jdbk.medsync.model.form.UserLoginForm;
@@ -40,6 +41,12 @@ public class UserController {
         Long register = userService.register(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(user.getId());
 
+    }
+
+    public ResponseEntity<UserDTO> getOne( @RequestBody Long id) {
+        User user = userService.getOne(id);
+        UserDTO userDTO = UserDTO.toDTO(user);
+        return ResponseEntity.status(HttpStatus.OK).body(userDTO);
     }
 
 
