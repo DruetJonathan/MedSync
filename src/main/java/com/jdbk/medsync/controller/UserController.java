@@ -11,10 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @RestController
@@ -44,8 +41,9 @@ public class UserController {
 
     }
 
+    @GetMapping("/user/{id:[0-9]+}")
     @PreAuthorize("hasAnyAuthority('MEDECIN','ADMINISTRATIF')")
-    public ResponseEntity<UserDTO> getOne( @RequestBody Long id) {
+    public ResponseEntity<UserDTO> getOne( @RequestBody @PathVariable Long id) {
         User user = userService.getOne(id);
         UserDTO userDTO = UserDTO.toDTO(user);
         return ResponseEntity.status(HttpStatus.OK).body(userDTO);
