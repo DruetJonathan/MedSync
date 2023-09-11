@@ -56,7 +56,7 @@ public class RendezVousController {
     @DeleteMapping("/{id:[0-9]+}")
     public ResponseEntity<String> removeRendezVous(@PathVariable Long id) {
         RendezVous rendezVous = rendezVousService.removeRendezVous(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Rendez-vous deleted");
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
     @PreAuthorize("hasAnyAuthority('ADMINISTRATIF','MEDECIN')")
     @GetMapping("/{id:[0-9]+}")

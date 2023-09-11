@@ -48,7 +48,7 @@ public class SalleController {
     @DeleteMapping("/{id:[0-9]+}")
     public ResponseEntity<String> removeSalle(@PathVariable Long id) {
             Salle salle = salleService.removeSalle(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Salle deleted");
+            return ResponseEntity.status(HttpStatus.OK).build();
 
     }
 

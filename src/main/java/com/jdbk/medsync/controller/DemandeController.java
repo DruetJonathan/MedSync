@@ -61,7 +61,7 @@ public class DemandeController {
     @DeleteMapping("/{id:[0-9]+}")
     public ResponseEntity<String> removeDemande(@PathVariable Long id) {
             Demande demande = demandeService.removeDemande(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Demand deleted");
+            return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PreAuthorize("hasAnyAuthority('ADMINISTRATIF','MEDECIN')")

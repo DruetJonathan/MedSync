@@ -22,6 +22,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
     @Override
     public User login(User user) {
+        System.out.println(user.toString());
         User existingUser = userRepository.getUserByEmail(user.getEmail()).orElseThrow(()-> new NotFoundException(user.getId(),UserServiceImpl.class.toString()));
         if(!existingUser.getPassword().equals(user.getPassword())){
             throw new NotTheGoodPasswordException(user.getId(), user.getEmail());
