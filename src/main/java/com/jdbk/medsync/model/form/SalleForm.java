@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.crypto.Mac;
 import java.util.HashSet;
 import java.util.Set;
 @Data
@@ -23,13 +24,13 @@ public class SalleForm {
     @NotNull
     private String numeroSalle;
     @NotNull
-    private Machine machine;
+    private String machine;
     private Set<Long> rendezVous = new HashSet<>();
     public Salle toEntity() {
         Salle salle = new Salle();
         salle.setEtage(etage);
         salle.setNumeroSalle(numeroSalle);
-        salle.setMachine(machine);
+        salle.setMachine(Machine.fromString(machine));
         return salle;
     }
 }

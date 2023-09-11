@@ -24,6 +24,7 @@ public class Demande {
     @JsonBackReference
     private User demandeur;
 
+    @Enumerated(EnumType.STRING)
     public Machine machine;
 
     @OneToOne(mappedBy = "demande")

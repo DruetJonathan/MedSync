@@ -18,7 +18,7 @@ public class SalleDTO {
     private Long id;
     private int etage;
     private String numeroSalle;
-    private Machine machine;
+    private String machine;
     private Set<RendezVous> rendezVous;
 
     public static SalleDTO  toDTO(Salle salle) {
@@ -28,7 +28,7 @@ public class SalleDTO {
                 .id(salle.getId())
                 .etage(salle.getEtage())
                 .numeroSalle(salle.getNumeroSalle())
-                .machine(salle.getMachine())
+                .machine(salle.getMachine().getValue())
                 .rendezVous(salle.getRendezVous())
                 .build();
     }

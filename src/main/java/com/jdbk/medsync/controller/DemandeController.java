@@ -37,6 +37,7 @@ public class DemandeController {
     @PostMapping("/add")
     public ResponseEntity<Long> addDemande( @RequestBody @Valid DemandeForm form) {
         Demande entity = form.toEntity();
+        System.out.println(entity);
         List<Produit> produits = produitService.getAllById(form.getProduitIds());
         entity.setProduits( new HashSet<>(produits));
         entity.setDemandeur(userService.getOne(form.getDemandeur()));

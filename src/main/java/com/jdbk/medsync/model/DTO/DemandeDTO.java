@@ -19,7 +19,7 @@ public class DemandeDTO {
     private Set<ProduitDTO> produits;
     private Long duree;
     private UserDTO demandeur;
-    private Machine machine;
+    private String machine;
     private RendezVous rendezVous;
 
     public static DemandeDTO toDTO(Demande demande){
@@ -33,7 +33,7 @@ public class DemandeDTO {
                 .produits(demande.getProduits().stream().map(ProduitDTO::toDTO).collect(Collectors.toSet()))
                 .duree(demande.getDuree())
                 .demandeur(UserDTO.toDTO(demande.getDemandeur()))
-                .machine(demande.getMachine())
+                .machine(demande.getMachine().getValue())
                 .rendezVous(demande.getRendezVous())
                 .build();
     }

@@ -28,7 +28,7 @@ public class DemandeMapper {
 
         Demande demande = new Demande();
         demande.setDuree(form.getDuree());
-        demande.setMachine(form.getMachine());
+//        demande.setMachine(form.getMachine());
 
         List<Produit> produits = produitService.getAllById(form.getProduitIds());
         demande.setProduits( new HashSet<>(produits));

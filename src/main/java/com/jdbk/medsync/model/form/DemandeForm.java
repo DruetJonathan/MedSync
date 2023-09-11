@@ -22,12 +22,12 @@ public class DemandeForm {
     @NotNull
     private Long demandeur;
 
-    private Machine machine;
+    private String machine;
 
     public Demande toEntity() {
         Demande demande = new Demande();
         demande.setDuree(this.duree);
-        demande.setMachine(this.machine);
+        demande.setMachine(Machine.fromString(machine));
         return demande;
     }
 }
