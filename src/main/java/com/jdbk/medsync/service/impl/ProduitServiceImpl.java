@@ -38,6 +38,8 @@ public class ProduitServiceImpl implements ProduitService {
         if (produit == null && !produitRepository.existsById(id)){
             throw new NotFoundException(id,ProduitServiceImpl.class.toString());
         }
+        Produit tmp = getProduitById(id);
+        produit.setDemandes(tmp.getDemandes());
         produit.setId(id);
         return produitRepository.save(produit);
     }
