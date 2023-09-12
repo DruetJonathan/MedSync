@@ -1,0 +1,10 @@
+INSERT INTO public.salle (id, etage, machine, numero_salle) VALUES (1, 1, 10, '100');
+INSERT INTO public.salle (id, etage, machine, numero_salle) VALUES (2, 1, 10, '101');
+INSERT INTO public.salle (id, etage, machine, numero_salle) VALUES (3, 2, 11, '200');
+INSERT INTO public.salle (id, etage, machine, numero_salle) VALUES (4, 2, 11, '201');
+INSERT INTO public.salle (id, etage, machine, numero_salle) VALUES (5, 3, 13, '300');
+INSERT INTO public.salle (id, etage, machine, numero_salle) VALUES (6, 3, 13, '301');
+INSERT INTO public.salle (id, etage, machine, numero_salle) VALUES (7, 4, 14, '400');
+INSERT INTO public.salle (id, etage, machine, numero_salle) VALUES (8, 4, 14, '401');
+INSERT INTO public.salle (id, etage, machine, numero_salle) VALUES (9, 5, 15, '500');
+INSERT INTO public.salle (id, etage, machine, numero_salle) VALUES (10, 5, 15, '501');
