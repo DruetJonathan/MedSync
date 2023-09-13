@@ -2,12 +2,14 @@ package com.jdbk.medsync.service.impl;
 
 import com.jdbk.medsync.exception.AlreadyExistException;
 import com.jdbk.medsync.exception.NotFoundException;
+import com.jdbk.medsync.model.Enum.Machine;
 import com.jdbk.medsync.model.entity.Salle;
 import com.jdbk.medsync.repository.SalleRepository;
 import com.jdbk.medsync.service.notImpl.SalleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SalleServiceImpl implements SalleService {
@@ -52,5 +54,10 @@ public class SalleServiceImpl implements SalleService {
     public List<Salle> getAll() {
         return salleRepository.findAll().stream()
                 .toList();
+    }
+
+    @Override
+    public List<Salle> getSallesDisponibles(Machine machine) {
+        return getAll().stream().filter(salle -> salle.getMachine().equals(machine)).collect(Collectors.toList());
     }
 }

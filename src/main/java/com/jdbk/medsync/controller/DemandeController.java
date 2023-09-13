@@ -82,7 +82,7 @@ public class DemandeController {
         );
     }
 //    @PreAuthorize("hasAnyRole('ADMINISTRATIF','MEDECIN')")
-    @PreAuthorize("hasAuthority('MEDECIN')")
+@PreAuthorize("hasAnyAuthority('ADMINISTRATIF','MEDECIN')")
     @GetMapping("/specificDemande/user/{id:[0-9]+}")
     public ResponseEntity<List<DemandeDTO>> getAllDemandeForDemandeur(@PathVariable("id") Long idUser) {
         User user = userService.getOne(idUser);

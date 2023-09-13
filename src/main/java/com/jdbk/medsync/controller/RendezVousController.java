@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -85,5 +87,15 @@ public class RendezVousController {
                         .map(RendezVousDTO::toDTO)
                         .toList()
         );
+    }
+    @PreAuthorize("hasAnyAuthority('ADMINISTRATIF','MEDECIN')")
+    @GetMapping("/disponibles")
+    public ResponseEntity<List<LocalDateTime>> getDatesHeuresDisponibles(
+            @RequestParam Long salleId,
+            @RequestParam int demandeDuree) {
+        // Obtenez les dates et heures disponibles en fonction de la salle et de la durée de la demande
+        List<LocalDateTime> datesHeuresDisponibles = rendezVousService.getDatesHeuresDisponibles(salleId, demandeDuree);
+
+        return ResponseEntity.ok(datesHeuresDisponibles);
     }
 }

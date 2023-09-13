@@ -1,5 +1,6 @@
 package com.jdbk.medsync.service.notImpl;
 
+import com.jdbk.medsync.model.Enum.Machine;
 import com.jdbk.medsync.model.entity.Demande;
 import com.jdbk.medsync.model.entity.Salle;
 
@@ -16,4 +17,6 @@ public interface SalleService {
     public Salle removeSalle(Long saleId);
 
     public List<Salle> getAll();
+
+    public List<Salle> getSallesDisponibles(Machine machine);
 }

@@ -1,6 +1,7 @@
 package com.jdbk.medsync.controller;
 
 import com.jdbk.medsync.model.DTO.SalleDTO;
+import com.jdbk.medsync.model.Enum.Machine;
 import com.jdbk.medsync.model.entity.Salle;
 import com.jdbk.medsync.model.form.SalleForm;
 import com.jdbk.medsync.service.notImpl.RendezVousService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.Mac;
 import java.util.HashSet;
 import java.util.List;
 
@@ -71,5 +73,20 @@ public class SalleController {
                         .toList()
         );
     }
+    @PreAuthorize("hasAnyAuthority('ADMINISTRATIF','MEDECIN')")
+    @GetMapping("/salles-disponibles")
+    public ResponseEntity<List<SalleDTO>> getSallesDisponibles(@RequestParam("machine") Machine machine) {
+        // Ajoutez un log pour vérifier la valeur de machine.
+        System.out.println("Machine selected: " + machine.toString());
+
+        List<Salle> sallesDisponibles = salleService.getSallesDisponibles(machine);
+
+        return ResponseEntity.ok(
+                sallesDisponibles.stream()
+                        .map(SalleDTO::toDTO)
+                        .toList()
+        );
+    }
+
 
 }
