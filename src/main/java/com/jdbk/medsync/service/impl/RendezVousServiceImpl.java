@@ -80,6 +80,71 @@ public class RendezVousServiceImpl implements RendezVousService {
         return rendezVousRepository.getRendezVousByUserId(user.getId());
     }
 
+//    @Override
+//    public List<LocalDateTime> getDatesHeuresDisponibles(Long salleId, int demandeDuree) {
+//        // 1. Obtenez tous les rendez-vous pour la salle spécifiée
+//        List<RendezVous> rendezVousSalle = rendezVousRepository.findBySalleId(salleId);
+//
+//        // 2. Créez une liste de toutes les dates possibles pour la salle
+//        List<LocalDateTime> toutesLesDates = genererToutesLesDates();
+//
+//        // Vérifiez d'abord si la liste des rendez-vous n'est pas vide
+//        if (!rendezVousSalle.isEmpty()) {
+//            // 3. Parcourez les rendez-vous existants et supprimez les dates déjà réservées
+//            for (RendezVous rdv : rendezVousSalle) {
+//                Iterator<LocalDateTime> dateIterator = toutesLesDates.iterator();
+//                while (dateIterator.hasNext()) {
+//                    LocalDateTime date = dateIterator.next();
+//                    if (!dateEstAvantOuEgale(date, rdv.getDateDebut()) && !dateEstApresOuEgale(date, rdv.getDateFin())) {
+//                        dateIterator.remove();
+//                    }
+//                }
+//            }
+//        }
+//
+//        // 4. Maintenant, filtrez les dates restantes pour ne conserver que celles
+//        //    qui ont une plage horaire suffisamment longue pour la demande
+//        List<LocalDateTime> datesHeuresDisponibles = new ArrayList<>();
+////        for (LocalDateTime date : toutesLesDates) {
+////            LocalDateTime dateFinDemande = date.plusMinutes(demandeDuree);
+//////            if (rendezVousSalle.isEmpty() || dateEstAvantOuEgale(dateFinDemande, rendezVousSalle.get(0).getDateFin())) {
+////            if (rendezVousSalle.isEmpty() || dateEstAvantOuEgale(dateFinDemande, rendezVousSalle.get(0).getDateFin())){
+////
+////                datesHeuresDisponibles.add(date);
+////            }
+////        }
+//        for (LocalDateTime date : toutesLesDates) {
+//            LocalDateTime dateFinDemande = date.plusMinutes(demandeDuree);
+//            boolean dateDisponible = true;
+//
+//            // Vérifier si la date est en conflit avec l'un des rendez-vous existants
+//            for (RendezVous rdv : rendezVousSalle) {
+//                if (!dateEstAvantOuEgale(dateFinDemande, rdv.getDateDebut()) && !dateEstApresOuEgale(date, rdv.getDateFin())) {
+//                    dateDisponible = false;
+//                    break; // Sortir de la boucle dès qu'un conflit est trouvé
+//                }
+//            }
+//
+//            // Si la date n'est pas en conflit avec tous les rendez-vous, elle est disponible
+//            if (dateDisponible) {
+//                datesHeuresDisponibles.add(date);
+//            }
+//        }
+//
+//// Supprimer les dates utilisées par le premier rendez-vous
+//        if (!rendezVousSalle.isEmpty()) {
+//            RendezVous premierRdv = rendezVousSalle.get(0);
+//            Iterator<LocalDateTime> dateIterator = datesHeuresDisponibles.iterator();
+//            while (dateIterator.hasNext()) {
+//                LocalDateTime date = dateIterator.next();
+//                if (!dateEstAvantOuEgale(date, premierRdv.getDateFin())) {
+//                    dateIterator.remove();
+//                }
+//            }
+//        }
+//        return datesHeuresDisponibles;
+//    }
+
     @Override
     public List<LocalDateTime> getDatesHeuresDisponibles(Long salleId, int demandeDuree) {
         // 1. Obtenez tous les rendez-vous pour la salle spécifiée
@@ -88,16 +153,20 @@ public class RendezVousServiceImpl implements RendezVousService {
         // 2. Créez une liste de toutes les dates possibles pour la salle
         List<LocalDateTime> toutesLesDates = genererToutesLesDates();
 
-        // Vérifiez d'abord si la liste des rendez-vous n'est pas vide
-        if (!rendezVousSalle.isEmpty()) {
-            // 3. Parcourez les rendez-vous existants et supprimez les dates déjà réservées
-            for (RendezVous rdv : rendezVousSalle) {
-                Iterator<LocalDateTime> dateIterator = toutesLesDates.iterator();
-                while (dateIterator.hasNext()) {
-                    LocalDateTime date = dateIterator.next();
-                    if (!dateEstAvantOuEgale(date, rdv.getDateDebut()) && !dateEstApresOuEgale(date, rdv.getDateFin())) {
-                        dateIterator.remove();
-                    }
+        // 3. Parcourez les rendez-vous existants et marquez les plages horaires comme indisponibles
+        for (RendezVous rdv : rendezVousSalle) {
+            LocalDateTime debutRdv = rdv.getDateDebut();
+            LocalDateTime finRdv = rdv.getDateFin();
+
+            // Parcourez toutes les dates possibles
+            Iterator<LocalDateTime> dateIterator = toutesLesDates.iterator();
+            while (dateIterator.hasNext()) {
+                LocalDateTime date = dateIterator.next();
+                if (dateEstApresOuEgale(date, finRdv) && dateEstAvantOuEgale(date, debutRdv)) {
+//                    System.out.println("date=>"+date.toString() );
+//                    System.out.println("date fin rdv =>"+finRdv.toString() );
+//                    System.out.println("true ou false =>"+dateEstApresOuEgale(date, finRdv));
+                    dateIterator.remove(); // Marquez la date comme indisponible
                 }
             }
         }
@@ -107,7 +176,9 @@ public class RendezVousServiceImpl implements RendezVousService {
         List<LocalDateTime> datesHeuresDisponibles = new ArrayList<>();
         for (LocalDateTime date : toutesLesDates) {
             LocalDateTime dateFinDemande = date.plusMinutes(demandeDuree);
-            if (rendezVousSalle.isEmpty() || dateEstAvantOuEgale(dateFinDemande, rendezVousSalle.get(0).getDateFin())) {
+            if (rendezVousSalle.isEmpty() ||
+                    dateEstAvantOuEgale(date, rendezVousSalle.get(0).getDateDebut())||
+                    dateEstApresOuEgale(dateFinDemande, rendezVousSalle.get(0).getDateFin())) {
                 datesHeuresDisponibles.add(date);
             }
         }
@@ -124,7 +195,7 @@ public class RendezVousServiceImpl implements RendezVousService {
         // Mettre à jour la date avec les minutes arrondies
 //        dateDebut = dateDebut.withMinute(minutesArrondies);
         dateDebut =  dateDebut.withHour(dateDebut.getHour()+2);
-        dateDebut =  dateDebut.withMinute(30);
+        dateDebut =  dateDebut.withMinute(0);
         LocalDateTime dateFin = dateDebut.plusDays(10); // Exemple : Générer des dates pour 1 an à partir de maintenant
         int frequenceMinutes = 60; // Fréquence en minutes
 
@@ -138,12 +209,12 @@ public class RendezVousServiceImpl implements RendezVousService {
 
     // Méthode pour comparer si une date est avant ou égale à une autre date
     private boolean dateEstAvantOuEgale(LocalDateTime date1, LocalDateTime date2) {
-        return !date1.isAfter(date2);
+        return !date1.isAfter(date2)&& !date1.isEqual(date2);
     }
 
     // Méthode pour comparer si une date est après ou égale à une autre date
     private boolean dateEstApresOuEgale(LocalDateTime date1, LocalDateTime date2) {
-        return !date1.isBefore(date2);
+        return !date1.isBefore(date2) && !date1.isEqual(date2);
     }
 
 }

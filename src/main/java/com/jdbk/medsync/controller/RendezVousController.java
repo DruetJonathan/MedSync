@@ -39,6 +39,8 @@ public class RendezVousController {
     @PostMapping("/add")
     public ResponseEntity<Long> addRendezVous(@RequestBody @Valid RendezVousForm form) {
         RendezVous entity = form.toEntity();
+        System.out.println(entity.getDateDebut());
+        System.out.println(entity.getDateFin());
         entity.setCreePar(userService.getOne(form.getIdUser()));
         entity.setDemande(demandeService.getOne(form.getDemande()));
         entity.setSalle(salleService.getOne(form.getSalle()));
