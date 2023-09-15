@@ -20,7 +20,7 @@ public class DemandeDTO {
     private Long duree;
     private UserDTO demandeur;
     private String machine;
-    private RendezVous rendezVous;
+    private RendezVousDTO rendezVous;
 
     public static DemandeDTO toDTO(Demande demande){
 
@@ -34,7 +34,7 @@ public class DemandeDTO {
                 .duree(demande.getDuree())
                 .demandeur(UserDTO.toDTO(demande.getDemandeur()))
                 .machine(demande.getMachine().getValue())
-                .rendezVous(demande.getRendezVous())
+                .rendezVous(RendezVousDTO.toDTO(demande.getRendezVous()))
                 .build();
     }
 }

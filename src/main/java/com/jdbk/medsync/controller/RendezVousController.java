@@ -16,6 +16,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -41,6 +43,8 @@ public class RendezVousController {
         RendezVous entity = form.toEntity();
         System.out.println(entity.getDateDebut());
         System.out.println(entity.getDateFin());
+        entity.setDateDebut(entity.getDateDebut().plusHours(2));
+        entity.setDateFin(entity.getDateFin().plusHours(2));
         entity.setCreePar(userService.getOne(form.getIdUser()));
         entity.setDemande(demandeService.getOne(form.getDemande()));
         entity.setSalle(salleService.getOne(form.getSalle()));

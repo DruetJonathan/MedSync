@@ -26,7 +26,7 @@ public interface RendezVousRepository extends JpaRepository<RendezVous,Long> {
         where (
                 r.dateDebut between ?1 and ?2 or
                 r.dateFin between ?1 and ?2
-            ) and r.id != ?3
+            )
         """)
     List<RendezVous> findOtherInConflict(
             LocalDateTime dateDebut,

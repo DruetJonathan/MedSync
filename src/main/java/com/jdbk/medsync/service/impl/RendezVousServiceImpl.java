@@ -30,7 +30,7 @@ public class RendezVousServiceImpl implements RendezVousService {
         if (!rendezVousChevauchants.isEmpty()) {
             Salle salle1 = rendezVous.getSalle();
             boolean salleValide = rendezVousChevauchants.stream().anyMatch(salle -> salle.getId().equals(salle1.getId()));
-            throw new AlreadyBusySalleException(salle1.getId(),rendezVous.getDateDebut(),rendezVous.getDateFin());
+//            throw new AlreadyBusySalleException(salle1.getId(),rendezVous.getDateDebut(),rendezVous.getDateFin());
         }
         return rendezVousRepository.save(rendezVous).getId();
     }
@@ -162,7 +162,7 @@ public class RendezVousServiceImpl implements RendezVousService {
             Iterator<LocalDateTime> dateIterator = toutesLesDates.iterator();
             while (dateIterator.hasNext()) {
                 LocalDateTime date = dateIterator.next();
-                if (dateEstApresOuEgale(date, finRdv) && dateEstAvantOuEgale(date, debutRdv)) {
+                if (!dateEstApresOuEgale(date, finRdv) && !dateEstAvantOuEgale(date, debutRdv)) {
 //                    System.out.println("date=>"+date.toString() );
 //                    System.out.println("date fin rdv =>"+finRdv.toString() );
 //                    System.out.println("true ou false =>"+dateEstApresOuEgale(date, finRdv));
@@ -209,12 +209,12 @@ public class RendezVousServiceImpl implements RendezVousService {
 
     // Méthode pour comparer si une date est avant ou égale à une autre date
     private boolean dateEstAvantOuEgale(LocalDateTime date1, LocalDateTime date2) {
-        return !date1.isAfter(date2)&& !date1.isEqual(date2);
+        return !date1.isAfter(date2);
     }
 
     // Méthode pour comparer si une date est après ou égale à une autre date
     private boolean dateEstApresOuEgale(LocalDateTime date1, LocalDateTime date2) {
-        return !date1.isBefore(date2) && !date1.isEqual(date2);
+        return !date1.isBefore(date2);
     }
 
 }

@@ -19,8 +19,8 @@ public class RendezVousDTO {
     private LocalDateTime dateDebut;
     private LocalDateTime dateFin;
     private Demande demande;
-    private User creePar;
-    private Salle salle;
+    private String creePar;
+    private SalleDTOSansRdv salle;
 
     public static RendezVousDTO toDTO(RendezVous rendezVous){
         if( rendezVous == null )
@@ -30,8 +30,8 @@ public class RendezVousDTO {
                 .dateDebut(rendezVous.getDateDebut())
                 .dateFin(rendezVous.getDateFin())
                 .demande(rendezVous.getDemande())
-                .creePar(rendezVous.getCreePar())
-                .salle(rendezVous.getSalle())
+                .creePar(rendezVous.getCreePar().getFirstname()+" "+rendezVous.getCreePar().getLastname())
+                .salle(SalleDTOSansRdv.sansRDV(rendezVous.getSalle()))
                 .build();
 
     }

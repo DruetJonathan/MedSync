@@ -1,5 +1,7 @@
 package com.jdbk.medsync.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +34,8 @@ public class Produit {
             joinColumns = @JoinColumn(name = "produit_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name= "demande_id", nullable = false)
     )
+
+    @JsonIgnore
     private Set<Demande> demandes = new HashSet<>();
 
 }

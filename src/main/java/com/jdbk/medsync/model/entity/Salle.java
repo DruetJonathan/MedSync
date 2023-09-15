@@ -24,4 +24,6 @@ public class Salle {
 
     @OneToMany(mappedBy = "salle", cascade = CascadeType.ALL)
     private Set<RendezVous> rendezVous;
+
+
 }
